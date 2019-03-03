@@ -1,2 +1,4 @@
 # Digit-Recognition
-Software that recognizes handwritten digits
+Software that recognizes handwritten digits.
+
+First push test
