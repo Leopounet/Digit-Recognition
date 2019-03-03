@@ -14,6 +14,7 @@ public class TopRightField extends Field
 
     /**
      * Creates the top right field.
+     * @param window The current window
      * @param width The width of the newly created field in pixel
      * @param height The height of the newly created field in pixel
      **/
@@ -26,6 +27,7 @@ public class TopRightField extends Field
 
     /**
      * Creates the top right field.
+     * @param window The current window
      * @param size The size of the newly created field
      **/
     public TopRightField(Window window, Dimension size)

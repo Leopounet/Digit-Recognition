@@ -12,6 +12,7 @@ public abstract class Field extends JPanel
 
     /**
      * Creates a new field object.
+     * @param window The current window
      * @param width Width in pixels of the newly created window
      * @param height Height in pixels of the newly created window
      **/
@@ -24,6 +25,7 @@ public abstract class Field extends JPanel
 
     /**
      * Creates a new field object.
+     * @param window The current window
      * @param size The size of the window in pixels (width, height) format
      **/
     public Field(Window window, Dimension size)

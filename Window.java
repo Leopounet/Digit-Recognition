@@ -18,6 +18,13 @@ public class Window extends JFrame
     private Dimension p_middleFieldSize = null;
     private Dimension p_bottomFieldSize = null;
 
+    // Path to the training sets
+    private String p_trainingImagesPath = "../data/train-images.idx3-ubyte";
+    private String p_trainingLabelsPath = "../data/train-labels.idx1-ubyte";
+
+    // The training dataset
+    public DataSet p_dataSet = null;
+
     /**
      * Creates a new window object.
      * @param width Width in pixels of the newly created window
@@ -27,6 +34,7 @@ public class Window extends JFrame
     {
         super();
         p_windowSize = new Dimension(width, height);
+        p_dataSet = new DataSet(p_trainingImagesPath, p_trainingLabelsPath);
         initWindow();
         createFields();
     }
@@ -39,6 +47,7 @@ public class Window extends JFrame
     {
         super();
         p_windowSize = size;
+        p_dataSet = new DataSet(p_trainingImagesPath, p_trainingLabelsPath);
         initWindow();
         createFields();
     }
