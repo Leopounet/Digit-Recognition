@@ -23,10 +23,10 @@ public class DataSet
     private int p_nbColumns = 0;
 
     // The list of images
-    public int p_listImages[][] = null;
+    private int p_listImages[][] = null;
 
     // The list of labels
-    public int p_listLabels[] = null;
+    private int p_listLabels[] = null;
 
     /**
      * Creates a new DataSet objects and reads the given files.
@@ -146,5 +146,25 @@ public class DataSet
     private void getNextLabel(FileInputStream fis, int nbLabel) throws IOException
     {
         p_listLabels[nbLabel] = fis.read();
+    }
+
+    /**
+     * Returns the array corresponding to the demanded image.
+     * @param index The index of the image to get
+     * @return An array of integers representing the image
+     **/
+    public int[] getImage(int index)
+    {
+        return p_listImages[index];
+    }
+
+    /**
+     * Returns the label of the corresponding image.
+     * @param index The index of the label to get
+     * @return The label of the image at the given index
+     **/
+    public int getLabel(int index)
+    {
+        return p_listLabels[index];
     }
 }

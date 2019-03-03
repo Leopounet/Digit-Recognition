@@ -23,7 +23,7 @@ public class Window extends JFrame
     private String p_trainingLabelsPath = "../data/train-labels.idx1-ubyte";
 
     // The training dataset
-    public DataSet p_dataSet = null;
+    private DataSet p_dataSet = null;
 
     /**
      * Creates a new window object.
@@ -130,5 +130,25 @@ public class Window extends JFrame
     public void setWindowSize(Dimension size)
     {
         p_windowSize = size;
+    }
+
+    /**
+     * Returns the array corresponding to the demanded image.
+     * @param index The index of the image to get
+     * @return An array of integers representing the image
+     **/
+    public int[] getImage(int index)
+    {
+        return p_dataSet.getImage(index);
+    }
+
+    /**
+     * Returns the label of the corresponding image.
+     * @param index The index of the label to get
+     * @return The label of the image at the given index
+     **/
+    public int getLabel(int index)
+    {
+        return p_dataSet.getLabel(index);
     }
 }
