@@ -14,6 +14,7 @@ public class MiddleField extends Field
     public MiddleField(int width, int height)
     {
         super(width, height);
+        initField(Color.GREEN);
     }
 
     /**
@@ -23,5 +24,6 @@ public class MiddleField extends Field
     public MiddleField(Dimension size)
     {
         super(size);
+        initField(Color.GREEN);
     }
 }

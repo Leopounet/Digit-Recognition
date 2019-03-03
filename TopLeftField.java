@@ -14,6 +14,7 @@ public class TopLeftField extends Field
     public TopLeftField(int width, int height)
     {
         super(width, height);
+        initField(Color.RED);
     }
 
     /**
@@ -23,5 +24,6 @@ public class TopLeftField extends Field
     public TopLeftField(Dimension size)
     {
         super(size);
+        initField(Color.RED);
     }
 }

@@ -4,7 +4,7 @@ import javax.imageio.*;
 import java.io.*;
 import java.awt.event.*;
 
-public class Field extends JPanel
+public abstract class Field extends JPanel
 {
     // Size of the field in pixels
     protected Dimension p_fieldSize = null;
@@ -28,6 +28,16 @@ public class Field extends JPanel
     {
         super();
         p_fieldSize = size;
+    }
+
+    /**
+     * Initializes the field layout.
+     * @param c The background color of the field. (mostly used to debug)
+     **/
+    protected void initField(Color c)
+    {
+        this.setBackground(c);
+        this.setPreferredSize(p_fieldSize);
     }
 
     /**

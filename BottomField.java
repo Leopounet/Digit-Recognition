@@ -14,6 +14,7 @@ public class BottomField extends Field
     public BottomField(int width, int height)
     {
         super(width, height);
+        initField(Color.BLUE);
     }
 
     /**
@@ -23,5 +24,6 @@ public class BottomField extends Field
     public BottomField(Dimension size)
     {
         super(size);
+        initField(Color.BLUE);
     }
 }
