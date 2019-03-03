@@ -6,24 +6,44 @@ import java.awt.event.*;
 
 public class TopRightField extends Field
 {
+    // Number of buttons on a row
+    private int p_nbButtonRow = 1;
+
+    // Number of buttons on a column
+    private int p_nbButtonColumn = 1;
+
     /**
      * Creates the top right field.
      * @param width The width of the newly created field in pixel
      * @param height The height of the newly created field in pixel
      **/
-    public TopRightField(int width, int height)
+    public TopRightField(Window window, int width, int height)
     {
-        super(width, height);
+        super(window, width, height);
         initField(Color.YELLOW);
+        initTopRightField();
     }
 
     /**
      * Creates the top right field.
      * @param size The size of the newly created field
      **/
-    public TopRightField(Dimension size)
+    public TopRightField(Window window, Dimension size)
     {
-        super(size);
+        super(window, size);
         initField(Color.YELLOW);
+        initTopRightField();
+    }
+
+    /**
+     * Initializes the top right field.
+     **/
+    private void initTopRightField()
+    {
+        // Sets the layout to a 1 row * 1 col format
+        this.setLayout(new GridLayout(p_nbButtonRow, p_nbButtonColumn));
+
+        // Adds a new button
+        
     }
 }

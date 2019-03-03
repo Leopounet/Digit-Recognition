@@ -72,10 +72,10 @@ public class Window extends JFrame
         p_bottomFieldSize = new Dimension(p_windowSize.width, 2 * p_windowSize.height / 10);
 
         // Creates the four main zones and add them to the content pane
-        addField(new TopLeftField(p_topLeftFieldSize), 0, 0, 1, 1);
-        addField(new TopRightField(p_topRightFieldSize), 1, 0, 1, 1);
-        addField(new MiddleField(p_middleFieldSize), 0, 1, 2, 1);
-        addField(new BottomField(p_bottomFieldSize), 0, 2, 2, 1);
+        addField(new TopLeftField(this, p_topLeftFieldSize), 0, 0, 1, 1);
+        addField(new TopRightField(this, p_topRightFieldSize), 1, 0, 1, 1);
+        addField(new MiddleField(this, p_middleFieldSize), 0, 1, 2, 1);
+        addField(new BottomField(this, p_bottomFieldSize), 0, 2, 2, 1);
     }
 
     /**

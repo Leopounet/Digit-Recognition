@@ -11,9 +11,9 @@ public class BottomField extends Field
      * @param width The width of the newly created field in pixel
      * @param height The height of the newly created field in pixel
      **/
-    public BottomField(int width, int height)
+    public BottomField(Window window, int width, int height)
     {
-        super(width, height);
+        super(window, width, height);
         initField(Color.BLUE);
     }
 
@@ -21,9 +21,9 @@ public class BottomField extends Field
      * Creates the bottom field.
      * @param size The size of the newly created field
      **/
-    public BottomField(Dimension size)
+    public BottomField(Window window, Dimension size)
     {
-        super(size);
+        super(window, size);
         initField(Color.BLUE);
     }
 }

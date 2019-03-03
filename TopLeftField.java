@@ -11,9 +11,9 @@ public class TopLeftField extends Field
      * @param width The width of the newly created field in pixel
      * @param height The height of the newly created field in pixel
      **/
-    public TopLeftField(int width, int height)
+    public TopLeftField(Window window, int width, int height)
     {
-        super(width, height);
+        super(window, width, height);
         initField(Color.RED);
     }
 
@@ -21,9 +21,9 @@ public class TopLeftField extends Field
      * Creates the top left field.
      * @param size The size of the newly created field
      **/
-    public TopLeftField(Dimension size)
+    public TopLeftField(Window window, Dimension size)
     {
-        super(size);
+        super(window, size);
         initField(Color.RED);
     }
 }

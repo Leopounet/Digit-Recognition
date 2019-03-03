@@ -11,9 +11,9 @@ public class MiddleField extends Field
      * @param width The width of the newly created field in pixel
      * @param height The height of the newly created field in pixel
      **/
-    public MiddleField(int width, int height)
+    public MiddleField(Window window, int width, int height)
     {
-        super(width, height);
+        super(window, width, height);
         initField(Color.GREEN);
     }
 
@@ -21,9 +21,9 @@ public class MiddleField extends Field
      * Creates the middle field.
      * @param size The size of the newly created field
      **/
-    public MiddleField(Dimension size)
+    public MiddleField(Window window, Dimension size)
     {
-        super(size);
+        super(window, size);
         initField(Color.GREEN);
     }
 }

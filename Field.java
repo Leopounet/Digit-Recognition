@@ -8,26 +8,29 @@ public abstract class Field extends JPanel
 {
     // Size of the field in pixels
     protected Dimension p_fieldSize = null;
+    protected Window p_window = null;
 
     /**
      * Creates a new field object.
      * @param width Width in pixels of the newly created window
      * @param height Height in pixels of the newly created window
      **/
-    public Field(int width, int height)
+    public Field(Window window, int width, int height)
     {
         super();
         p_fieldSize = new Dimension(width, height);
+        p_window = window;
     }
 
     /**
      * Creates a new field object.
      * @param size The size of the window in pixels (width, height) format
      **/
-    public Field(Dimension size)
+    public Field(Window window, Dimension size)
     {
         super();
         p_fieldSize = size;
+        p_window = window;
     }
 
     /**
