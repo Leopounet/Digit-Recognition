@@ -1,4 +1,3 @@
-
 public class LabelDistance
 {
     // Label of the current image
@@ -15,5 +14,6 @@ public class LabelDistance
     public LabelDistance(int label)
     {
         p_label = label;
+        p_distance = -1;
     }
 }

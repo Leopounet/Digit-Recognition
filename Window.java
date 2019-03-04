@@ -150,6 +150,7 @@ public class Window extends JFrame
                     p_uploadedImage = p_uploadedImage.getScaledInstance(p_dataSet.getNbPixelRows(),
                                                                         p_dataSet.getNbPixelColumns(),
                                                                         Image.SCALE_DEFAULT);
+                    p_dataSet.computeDistances(p_uploadedImage);
                 }
             }
          }

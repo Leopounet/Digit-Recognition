@@ -1,5 +1,5 @@
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
+import java.awt.image.DataBufferInt;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.Image.*;
@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.imageio.*;
 import java.io.*;
 import java.awt.event.*;
+import java.util.Arrays;
 
 public class DataSet
 {
@@ -61,8 +62,6 @@ public class DataSet
             // Gets the size of both files
             p_nbImages = getNextInt(p_imagesStream);
             p_nbLabels = getNextInt(p_labelsStream);
-            p_nbImages = 1;
-            p_nbLabels = 1;
 
             // Gets the number of rows and columns in the images file
             p_nbRows = getNextInt(p_imagesStream);
@@ -196,16 +195,7 @@ public class DataSet
         g2d.dispose();
 
         // Get byte array representing every pixels of the image
-        final byte[] bytePixels = ((DataBufferByte) bImage.getRaster().getDataBuffer()).getData();
-
-        // Array to store every pixels as integers
-        p_pixels = new int[bytePixels.length / 3];
-
-        // Computes the pixels seperately in integers
-        for(int pixel = 0; pixel < bytePixels.length; pixel += 3)
-        {
-            p_pixels[pixel / 3] = getNextPixel(bytePixels, pixel);
-        }
+        p_pixels = ((DataBufferInt)bImage.getRaster().getDataBuffer()).getData();
     }
 
     /**
@@ -216,19 +206,30 @@ public class DataSet
     public void computeDistances(Image image)
     {
         convertImageToIntArray(image);
-        for(int label = 0; label < p_nbLabels; label++)
+        for(int index = 0; index < p_nbLabels; index++)
         {
-            p_labelDistance[label].p_distance = computeDistance(label);
+            System.out.println(index);
+            p_labelDistance[index].p_distance = computeDistance(index);
+        }
+        Arrays.sort(p_labelDistance, new LabelDistanceCompare());
+        for(LabelDistance ld : p_labelDistance)
+        {
+            System.out.println(ld.p_distance + " "+ ld.p_label);
         }
     }
 
     /**
      * Compute the distance between two images.
-     * @param label The index of the image to compare
+     * @param index The index of the image to compare
      **/
-    private double computeDistance(int label)
+    private double computeDistance(int index)
     {
-        return 0;
+        double distance = 0;
+        for(int pixel = 0; pixel < p_nbRows *  p_nbColumns; pixel++)
+        {
+            distance += Math.pow(p_pixels[pixel] - p_listImages[index][pixel], 2);
+        }
+        return Math.sqrt(distance);
     }
 
     /**
