@@ -44,6 +44,15 @@ public class DataSet
     // Current image to analyze
     private int p_pixels[] = null;
 
+    // array containing the probabily of the number being te one drawn
+    // index 0 --> probability that 0 has been drawn
+    // index 1 --> probability that 1 has been drawn
+    // ...
+    private double p_probabilities[] = null;
+
+    // K value for the kNN algorithm
+    private int p_kValue = 1000;
+
     /**
      * Creates a new DataSet objects and reads the given files.
      **/
@@ -71,6 +80,10 @@ public class DataSet
             p_listImages = new int[p_nbImages][p_nbRows * p_nbColumns];
             p_listLabels = new int[p_nbLabels];
             p_labelDistance = new LabelDistance[p_nbLabels];
+
+            // Initializes the array of probabilities
+            p_probabilities = new double[10];
+            resetProbabilities();
 
             // Reads and stores every labels and images
             for(int index = 0; index < p_nbImages; index++)
@@ -208,28 +221,60 @@ public class DataSet
         convertImageToIntArray(image);
         for(int index = 0; index < p_nbLabels; index++)
         {
-            System.out.println(index);
-            p_labelDistance[index].p_distance = computeDistance(index);
+            p_labelDistance[index] = computeDistance(index);
         }
         Arrays.sort(p_labelDistance, new LabelDistanceCompare());
-        for(LabelDistance ld : p_labelDistance)
+        computeProbabilities();
+        for(int index = 0; index < 10; index++)
         {
-            System.out.println(ld.p_distance + " "+ ld.p_label);
+            System.out.printf("%d has %.2f percent chance to be the drawn image.\n", index, p_probabilities[index] * 100);
+            // System.out.println(index + " has " + p_probabilities[index] * 100 + "% chance to be the drawn image.");
         }
+        System.out.println("");
     }
 
     /**
      * Compute the distance between two images.
      * @param index The index of the image to compare
      **/
-    private double computeDistance(int index)
+    private LabelDistance computeDistance(int index)
     {
         double distance = 0;
         for(int pixel = 0; pixel < p_nbRows *  p_nbColumns; pixel++)
         {
             distance += Math.pow(p_pixels[pixel] - p_listImages[index][pixel], 2);
         }
-        return Math.sqrt(distance);
+        LabelDistance ld = new LabelDistance(p_listLabels[index]);
+        ld.p_distance = Math.sqrt(distance);
+        return ld;
+    }
+
+    /**
+     * Computes the probabilities ofeach possible numbers.
+     **/
+    private void computeProbabilities()
+    {
+        resetProbabilities();
+        for(int index = 0; index < p_kValue; index++)
+        {
+            p_probabilities[p_labelDistance[index].p_label]++;
+        }
+
+        for(int index = 0; index < 10; index++)
+        {
+            p_probabilities[index] /= p_kValue;
+        }
+    }
+
+    /**
+     * Resets the probabilties.
+     **/
+    private void resetProbabilities()
+    {
+        for(int index = 0; index < 10; index++)
+        {
+            p_probabilities[index] = 0;
+        }
     }
 
     /**
