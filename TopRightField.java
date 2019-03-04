@@ -46,6 +46,6 @@ public class TopRightField extends Field
         this.setLayout(new GridLayout(p_nbButtonRow, p_nbButtonColumn));
 
         // Adds a new button
-        
+        this.add(new JButton("Upload"));
     }
 }

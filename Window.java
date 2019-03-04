@@ -133,22 +133,11 @@ public class Window extends JFrame
     }
 
     /**
-     * Returns the array corresponding to the demanded image.
-     * @param index The index of the image to get
-     * @return An array of integers representing the image
+     * Returns the data set bound to the program.
+     * @return The data set to use.
      **/
-    public int[] getImage(int index)
+    public DataSet getDataSet()
     {
-        return p_dataSet.getImage(index);
-    }
-
-    /**
-     * Returns the label of the corresponding image.
-     * @param index The index of the label to get
-     * @return The label of the image at the given index
-     **/
-    public int getLabel(int index)
-    {
-        return p_dataSet.getLabel(index);
+        return p_dataSet;
     }
 }
