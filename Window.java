@@ -88,10 +88,10 @@ public class Window extends JFrame implements ActionListener
         p_bottomFieldSize = new Dimension(p_windowSize.width, 2 * p_windowSize.height / 10);
 
         // Creates the four main zones
-        p_tlField = new TopLeftField(this, p_topLeftFieldSize);
-        p_trField = new TopRightField(this, p_topRightFieldSize);
-        p_mField = new MiddleField(this, p_middleFieldSize);
-        p_bField = new BottomField(this, p_bottomFieldSize);
+        p_tlField = new TopLeftField(p_topLeftFieldSize);
+        p_trField = new TopRightField(p_topRightFieldSize);
+        p_mField = new MiddleField(p_middleFieldSize);
+        p_bField = new BottomField(p_bottomFieldSize);
 
         // Add the window to the list of listener of buttons of the top right field
         p_trField.getUploadButton().addActionListener(this);

@@ -17,13 +17,12 @@ public class TopRightField extends Field
 
     /**
      * Creates the top right field.
-     * @param window The current window
      * @param width The width of the newly created field in pixel
      * @param height The height of the newly created field in pixel
      **/
-    public TopRightField(Window window, int width, int height)
+    public TopRightField(int width, int height)
     {
-        super(window, width, height);
+        super(width, height);
         initButtons();
         initField(Color.YELLOW);
         initTopRightField();
@@ -31,12 +30,11 @@ public class TopRightField extends Field
 
     /**
      * Creates the top right field.
-     * @param window The current window
      * @param size The size of the newly created field
      **/
-    public TopRightField(Window window, Dimension size)
+    public TopRightField(Dimension size)
     {
-        super(window, size);
+        super(size);
         initButtons();
         initField(Color.YELLOW);
         initTopRightField();
