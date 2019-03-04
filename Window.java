@@ -4,7 +4,7 @@ import javax.imageio.*;
 import java.io.*;
 import java.awt.event.*;
 
-public class Window extends JFrame implements ActionListener
+public class Window extends JFrame
 {
     // Used to store the width and height of the window in pixels
     private Dimension p_windowSize = null;
@@ -94,7 +94,7 @@ public class Window extends JFrame implements ActionListener
         p_bField = new BottomField(p_bottomFieldSize);
 
         // Add the window to the list of listener of buttons of the top right field
-        p_trField.getUploadButton().addActionListener(this);
+        p_trField.getUploadButton().addActionListener(new UploadButtonListener());
 
         // Adds them to the content pane
         addField(p_tlField, 0, 0, 1, 1);
@@ -122,13 +122,18 @@ public class Window extends JFrame implements ActionListener
      }
 
      /**
-      * Action listener of the window so that the state of the window can be
-      * modified.
-      * @param e The event information
+      * Action listener of the upload button.
       **/
-     public void actionPerformed(ActionEvent e)
+     public class UploadButtonListener implements ActionListener
      {
-         System.out.println("Hello");
+         /**
+          * Modifies the window when the upload button is clicked.
+          * @param e The event information
+          **/
+         public void actionPerformed(ActionEvent e)
+         {
+             System.out.println("Hello");
+         }
      }
 
     /**
