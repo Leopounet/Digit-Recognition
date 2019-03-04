@@ -4,6 +4,9 @@ import javax.imageio.*;
 import java.io.*;
 import java.awt.event.*;
 
+/**
+ * Represents the bottom field of this window.
+ **/
 public class BottomField extends Field
 {
     /**
@@ -14,7 +17,7 @@ public class BottomField extends Field
     public BottomField(int width, int height)
     {
         super(width, height);
-        initField(Color.BLUE);
+        init();
     }
 
     /**
@@ -24,6 +27,14 @@ public class BottomField extends Field
     public BottomField(Dimension size)
     {
         super(size);
+        init();
+    }
+
+    /**
+     * Initializes the current object.
+     **/
+    private void init()
+    {
         initField(Color.BLUE);
     }
 }

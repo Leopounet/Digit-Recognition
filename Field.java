@@ -4,6 +4,9 @@ import javax.imageio.*;
 import java.io.*;
 import java.awt.event.*;
 
+/**
+ * Represents a section of a window.
+ **/
 public abstract class Field extends JPanel
 {
     // Size of the field in pixels

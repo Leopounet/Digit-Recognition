@@ -4,16 +4,20 @@ import javax.imageio.*;
 import java.io.*;
 import java.awt.event.*;
 
+/**
+ * Represents the top right field of this window.
+ **/
 public class TopRightField extends Field
 {
     // Number of buttons on a row
-    private int p_nbButtonRow = 1;
+    private int p_nbButtonRow = 2;
 
     // Number of buttons on a column
     private int p_nbButtonColumn = 1;
 
     // List of buttons on this field
-    private UploadButton p_upButton = null;
+    private JButton p_upButton = null;
+    private JButton p_submitButton = null;
 
     /**
      * Creates the top right field.
@@ -23,9 +27,7 @@ public class TopRightField extends Field
     public TopRightField(int width, int height)
     {
         super(width, height);
-        initButtons();
-        initField(Color.YELLOW);
-        initTopRightField();
+        init();
     }
 
     /**
@@ -35,8 +37,21 @@ public class TopRightField extends Field
     public TopRightField(Dimension size)
     {
         super(size);
+        init();
+    }
+
+    /**
+     * initializes this object.
+     **/
+    private void init()
+    {
+        // Inits the buttons
         initButtons();
+
+        // Inits the field
         initField(Color.YELLOW);
+
+        // Init the top right field
         initTopRightField();
     }
 
@@ -45,7 +60,9 @@ public class TopRightField extends Field
      **/
     public void initButtons()
     {
-        p_upButton = new UploadButton("Upload");
+        // Creates the buttons
+        p_upButton = new JButton("Upload");
+        p_submitButton = new JButton("Submit");
     }
 
     /**
@@ -56,16 +73,26 @@ public class TopRightField extends Field
         // Sets the layout to a 1 row * 1 col format
         this.setLayout(new GridLayout(p_nbButtonRow, p_nbButtonColumn));
 
-        // Adds a new button
+        // Adds the buttons
         this.add(p_upButton);
+        this.add(p_submitButton);
     }
 
     /**
      * Returns the upload button.
      * @return An UploadButton instance.
      **/
-    public UploadButton getUploadButton()
+    public JButton getUploadButton()
     {
         return p_upButton;
+    }
+
+    /**
+     * Returns the submit button.
+     * @return An JButton instance.
+     **/
+    public JButton getSubmitButton()
+    {
+        return p_submitButton;
     }
 }

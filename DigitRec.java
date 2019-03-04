@@ -1,4 +1,6 @@
-
+/**
+ * Launches the software.
+ **/
 public class DigitRec
 {
     public static void main(String args[])

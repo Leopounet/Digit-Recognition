@@ -35,7 +35,7 @@ public class Window extends JFrame
     private JFileChooser p_fc = null;
 
     // Current directory of the user
-    File workingDirectory = new File(System.getProperty("user.dir"));
+    File p_directory = new File(System.getProperty("user.dir"));
 
     // Current uploaded image
     private Image p_uploadedImage = null;
@@ -49,10 +49,7 @@ public class Window extends JFrame
     public Window(int width, int height)
     {
         super();
-        p_windowSize = new Dimension(width, height);
-        p_dataSet = new DataSet(p_trainingImagesPath, p_trainingLabelsPath);
-        initWindow();
-        createFields();
+        init(new Dimension(width, height));
     }
 
     /**
@@ -62,9 +59,28 @@ public class Window extends JFrame
     public Window(Dimension size)
     {
         super();
+        init(size);
+    }
+
+    /**
+     * Initializes the object.
+     * @param size The size of the window
+     **/
+    private void init(Dimension size)
+    {
+        // Set th size of the window
         p_windowSize = size;
+
+        // Creates a new data set
         p_dataSet = new DataSet(p_trainingImagesPath, p_trainingLabelsPath);
+
+        // Create a new file browser
+        p_fc = new JFileChooser();
+
+        // Initializes the window
         initWindow();
+
+        // Creates the different fields
         createFields();
     }
 
@@ -74,11 +90,17 @@ public class Window extends JFrame
      **/
     private void initWindow()
     {
+        // Centers the window
         this.setLocationRelativeTo(null);
+
+        // Closing the window stops the program
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Sets the size of the window
         this.setSize(p_windowSize);
+
+        // Makes the window visible
         this.setVisible(true);
-        p_fc = new JFileChooser();
     }
 
     /**
@@ -93,10 +115,11 @@ public class Window extends JFrame
         this.setContentPane(p_contentPane);
 
         // Sets the sizes of the different fields
+        // These sizes have been choosen arbitrarly
         p_topLeftFieldSize = new Dimension(8 * p_windowSize.width / 10, p_windowSize.height / 2);
         p_topRightFieldSize = new Dimension(2 * p_windowSize.width / 10, p_windowSize.height / 2);
-        p_middleFieldSize = new Dimension(p_windowSize.width, 3 * p_windowSize.height / 10);
-        p_bottomFieldSize = new Dimension(p_windowSize.width, 2 * p_windowSize.height / 10);
+        p_middleFieldSize = new Dimension(p_windowSize.width, 4 * p_windowSize.height / 10);
+        p_bottomFieldSize = new Dimension(p_windowSize.width, 1 * p_windowSize.height / 10);
 
         // Creates the four main zones
         p_tlField = new TopLeftField(p_topLeftFieldSize);
@@ -106,6 +129,7 @@ public class Window extends JFrame
 
         // Add the window to the list of listener of buttons of the top right field
         p_trField.getUploadButton().addActionListener(new UploadButtonListener());
+        p_trField.getSubmitButton().addActionListener(new SubmitButtonListener());
 
         // Adds them to the content pane
         addField(p_tlField, 0, 0, 1, 1);
@@ -124,11 +148,14 @@ public class Window extends JFrame
      **/
      private void addField(JPanel zone, int x, int y, int width, int height)
      {
+         // Sets the gridbagconstraints so that the field is placed correctly
          GridBagConstraints gbc = new GridBagConstraints();
          gbc.gridx = x;
          gbc.gridy = y;
          gbc.gridheight = height;
          gbc.gridwidth = width;
+
+         // Adds the field at the right position
          this.getContentPane().add(zone, gbc);
      }
 
@@ -143,20 +170,60 @@ public class Window extends JFrame
           **/
          public void actionPerformed(ActionEvent e)
          {
-            p_fc.setCurrentDirectory(workingDirectory);
-            int returnVal = p_fc.showOpenDialog(Window.this);
-            if (returnVal == JFileChooser.APPROVE_OPTION)
-            {
-                File file = p_fc.getSelectedFile();
-                p_uploadedImage = p_tlField.displayImage(file.getAbsolutePath());
-                if(p_uploadedImage != null)
-                {
-                    p_uploadedImage = p_uploadedImage.getScaledInstance(p_dataSet.getNbPixelRows(),
-                                                                        p_dataSet.getNbPixelColumns(),
-                                                                        Image.SCALE_DEFAULT);
-                    p_mField.drawDiagram(p_dataSet.computeProbabilities(p_uploadedImage));
-                }
-            }
+             processImage();
+         }
+     }
+
+     /**
+      * Action listener of the submit button.
+      **/
+     public class SubmitButtonListener implements ActionListener
+     {
+         /**
+          * Modifies the window when the upload button is clicked.
+          * @param e The event information
+          **/
+         public void actionPerformed(ActionEvent e)
+         {
+             processProbabilities();
+         }
+     }
+
+     /**
+      * Processes the image and draws it on the top left field.
+      **/
+     private void processImage()
+     {
+         // Opens the current directory
+         p_fc.setCurrentDirectory(p_directory);
+
+         // Computes if the file is accessible
+         int returnVal = p_fc.showOpenDialog(Window.this);
+         if (returnVal == JFileChooser.APPROVE_OPTION)
+         {
+             // Get the selected file
+             File file = p_fc.getSelectedFile();
+
+             // Displays the image
+             p_uploadedImage = p_tlField.displayImage(file.getAbsolutePath());
+         }
+     }
+
+     /**
+      * Computes and displays the probability of each digits.
+      **/
+     private void processProbabilities()
+     {
+         // If there is an image
+         if(p_uploadedImage != null)
+         {
+             // Rescales the image to 28 * 28
+             p_uploadedImage = p_uploadedImage.getScaledInstance(p_dataSet.getNbPixelRows(),
+                                                                 p_dataSet.getNbPixelColumns(),
+                                                                 Image.SCALE_DEFAULT);
+
+             // Draw the diagram
+             p_mField.drawDiagram(p_dataSet.computeProbabilities(p_uploadedImage));
          }
      }
 

@@ -55,6 +55,8 @@ public class DataSet
 
     /**
      * Creates a new DataSet objects and reads the given files.
+     * @param imagesPath Path to the training images
+     * @param labelsPath Path to the labels of the training images
      **/
     public DataSet(String imagesPath, String labelsPath)
     {
@@ -103,9 +105,6 @@ public class DataSet
         }
         finally
         {
-            System.out.println(p_startCodeImages + " " + p_startCodeLabels);
-            System.out.println(p_nbImages + " " + p_nbLabels);
-            System.out.println(p_nbRows + " " + p_nbColumns);
             try
             {
                 // Closes the input streams
@@ -156,40 +155,101 @@ public class DataSet
     /**
      * Returns the next pixel of the given file.
      * @param bytes The byte array representing the pixels
+     * @param index The current pixel the function is processing
      * @return An integer corresponding to the next pixel of the given file
      **/
     private int getNextPixel(byte[] bytes, int index)
     {
+        // Int to store a pixel
         int argb = 0;
+
+        // Alpha channel (255)
         argb += -16777216;
+
+        // Red channel
         argb += ((int) bytes[index] & 0xff);
+
+        // Green channel
         argb += (((int) bytes[index + 1] & 0xff) << 8);
+
+        // Blue channel
         argb += (((int) bytes[index + 2] & 0xff) << 16);
         return argb;
     }
 
     /**
-     * Adds the next image to the list of images
+     * Adds the next image to the list of images.
      * @param fis The file to parse
+     * @param nbImage The current image being processed
      **/
     private void getNextImage(FileInputStream fis, int nbImage) throws IOException
     {
+        // Loops through every pixels
         for(int x = 0; x < p_nbColumns; x++)
         {
             for(int y = 0; y < p_nbRows; y++)
             {
+                // Stores each pixels
                 p_listImages[nbImage][x * p_nbColumns + y] = getNextPixel(fis);
             }
         }
     }
 
     /**
-     * Adds the next label to the list of labels
+     * Adds the next label to the list of labels.
      * @param fis The file to parse
+     * @param nbLabel The current index of the label being processed
      **/
     private void getNextLabel(FileInputStream fis, int nbLabel) throws IOException
     {
         p_listLabels[nbLabel] = fis.read();
+    }
+
+    /**
+     * Computes the probabilities ofeach possible numbers.
+     * @param image The image to process
+     **/
+    public double[] computeProbabilities(Image image)
+    {
+        // Compute the distance between the uploaded image and all the training sample
+        computeDistances(image);
+
+        // Sets all probabilities to 0
+        resetProbabilities();
+
+        // For 0 to K, count the number of each digits
+        for(int index = 0; index < p_kValue; index++)
+        {
+            p_probabilities[p_labelDistance[index].p_label]++;
+        }
+
+        // Computes the confidence for every values
+        for(int index = 0; index < 10; index++)
+        {
+            p_probabilities[index] /= p_kValue;
+        }
+        return p_probabilities;
+    }
+
+    /**
+     * Computes the euclidian distance between the given image and every training
+     * images.
+     * @param image The image to compare to the training data
+     **/
+    private void computeDistances(Image image)
+    {
+        // Converts the image to an array of ints
+        convertImageToIntArray(image);
+
+        // For every images in the training set, compute the euclidian distance
+        // to the uploaded image
+        for(int index = 0; index < p_nbLabels; index++)
+        {
+            p_labelDistance[index] = computeDistance(index);
+        }
+
+        // Sorts the euclidian distances
+        Arrays.sort(p_labelDistance, new LabelDistanceCompare());
     }
 
     /**
@@ -198,7 +258,7 @@ public class DataSet
      **/
     private void convertImageToIntArray(Image image)
     {
-        // Convert ImageIO to BufferedImage
+        // Convert Image to BufferedImage
         BufferedImage bImage = new BufferedImage(image.getWidth(null),
                                                image.getHeight(null),
                                                BufferedImage.TYPE_INT_ARGB);
@@ -212,53 +272,26 @@ public class DataSet
     }
 
     /**
-     * Computes the euclidian distance between the given image and every training
-     * images.
-     * @param image The image to compare to the training data
-     **/
-    public void computeDistances(Image image)
-    {
-        convertImageToIntArray(image);
-        for(int index = 0; index < p_nbLabels; index++)
-        {
-            p_labelDistance[index] = computeDistance(index);
-        }
-        Arrays.sort(p_labelDistance, new LabelDistanceCompare());
-    }
-
-    /**
      * Compute the distance between two images.
      * @param index The index of the image to compare
      **/
     private LabelDistance computeDistance(int index)
     {
+        // Var to store the distance
         double distance = 0;
+
+        // For every pixels in the image, compute the distance squared
         for(int pixel = 0; pixel < p_nbRows *  p_nbColumns; pixel++)
         {
             distance += Math.pow(p_pixels[pixel] - p_listImages[index][pixel], 2);
         }
+
+        // Creates a new LabelDistance to associate a distance to a label
         LabelDistance ld = new LabelDistance(p_listLabels[index]);
+
+        // Computes the square root of the computed "distance"
         ld.p_distance = Math.sqrt(distance);
         return ld;
-    }
-
-    /**
-     * Computes the probabilities ofeach possible numbers.
-     **/
-    public double[] computeProbabilities(Image image)
-    {
-        computeDistances(image);
-        resetProbabilities();
-        for(int index = 0; index < p_kValue; index++)
-        {
-            p_probabilities[p_labelDistance[index].p_label]++;
-        }
-
-        for(int index = 0; index < 10; index++)
-        {
-            p_probabilities[index] /= p_kValue;
-        }
-        return p_probabilities;
     }
 
     /**
@@ -266,7 +299,8 @@ public class DataSet
      **/
     private void resetProbabilities()
     {
-        for(int index = 0; index < 10; index++)
+        // For every index of the array, set it to 0
+        for(int index = 0; index < p_probabilities.length; index++)
         {
             p_probabilities[index] = 0;
         }
@@ -308,5 +342,14 @@ public class DataSet
     public int getNbPixelColumns()
     {
         return p_nbColumns;
+    }
+
+    /**
+     * Returns the probabilities of each digits.
+     * @return Returns an array of doubles corresponding to the probabilities per digits.
+     **/
+    public double[] getProbabilities()
+    {
+        return p_probabilities;
     }
 }

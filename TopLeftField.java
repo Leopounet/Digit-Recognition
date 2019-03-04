@@ -5,9 +5,12 @@ import java.io.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * Represents the top left field of this window.
+ **/
 public class TopLeftField extends Field
 {
-    // If true, an image should be displayed
+    // If true, an image should be displayed (the button just got clicked)
     private boolean p_displayImage = false;
 
     // Image to display
@@ -63,13 +66,18 @@ public class TopLeftField extends Field
      **/
     public Image displayImage(String path)
     {
+        // The original image
         Image tmp = null;
         try
         {
+            // Loads the image if possible
             tmp = ImageIO.read(new File(path));
+
+            // Resizes the image so that it fits the top left field
             p_image = ImageIO.read(new File(path)).getScaledInstance(p_fieldSize.width,
                                                                      p_fieldSize.height,
                                                                      Image.SCALE_DEFAULT);
+            // Set to true to display an image
             p_displayImage = true;
             repaint();
         }

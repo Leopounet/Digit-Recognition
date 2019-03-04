@@ -1,3 +1,7 @@
+
+/**
+ * Class to store a label associated to a probability. Acts as a structure in C.
+ **/
 public class LabelDistance
 {
     // Label of the current image
