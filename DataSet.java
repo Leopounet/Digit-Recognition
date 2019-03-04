@@ -167,4 +167,22 @@ public class DataSet
     {
         return p_listLabels[index];
     }
+
+    /**
+     * Returns the number of pixel on a row in a Image.
+     * @return An integer representing the number of pixels on the row of and image.
+     **/
+    public int getNbPixelRows()
+    {
+        return p_nbRows;
+    }
+
+    /**
+     * Returns the number of pixel on a column in a Image.
+     * @return An integer representing the number of pixels on the column of and image.
+     **/
+    public int getNbPixelColumns()
+    {
+        return p_nbColumns;
+    }
 }

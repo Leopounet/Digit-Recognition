@@ -34,6 +34,9 @@ public class Window extends JFrame
     // Use to browse files
     private JFileChooser p_fc = null;
 
+    // Current uploaded image
+    private Image p_uploadedImage = null;
+
 
     /**
      * Creates a new window object.
@@ -141,7 +144,13 @@ public class Window extends JFrame
             if (returnVal == JFileChooser.APPROVE_OPTION)
             {
                 File file = p_fc.getSelectedFile();
-                p_tlField.displayImage(file.getAbsolutePath());
+                p_uploadedImage = p_tlField.displayImage(file.getAbsolutePath());
+                if(p_uploadedImage != null)
+                {
+                    p_uploadedImage = p_uploadedImage.getScaledInstance(p_dataSet.getNbPixelRows(),
+                                                                        p_dataSet.getNbPixelColumns(),
+                                                                        Image.SCALE_DEFAULT);
+                }
             }
          }
      }

@@ -59,14 +59,17 @@ public class TopLeftField extends Field
     /**
      * If possible, displays the image given as parameter.
      * @param path The path to the image.
+     * @return The original image uploaded.
      **/
-    public void displayImage(String path)
+    public Image displayImage(String path)
     {
+        Image tmp = null;
         try
         {
+            tmp = ImageIO.read(new File(path));
             p_image = ImageIO.read(new File(path)).getScaledInstance(p_fieldSize.width,
                                                                      p_fieldSize.height,
-                                                                     Image.SCALE_DEFAULT);;
+                                                                     Image.SCALE_DEFAULT);
             p_displayImage = true;
             repaint();
         }
@@ -78,5 +81,6 @@ public class TopLeftField extends Field
         {
             e.printStackTrace();
         }
+        return tmp;
     }
 }
