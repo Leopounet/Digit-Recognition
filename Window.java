@@ -31,6 +31,9 @@ public class Window extends JFrame
     private Dimension p_middleFieldSize = null;
     private Dimension p_bottomFieldSize = null;
 
+    // Use to browse files
+    private JFileChooser p_fc = null;
+
 
     /**
      * Creates a new window object.
@@ -60,7 +63,8 @@ public class Window extends JFrame
     }
 
     /**
-     * Sets the default parameters of the window and displays it.
+     * Sets the default parameters of the window and displays it. Also adds the
+     * file chooser.
      **/
     private void initWindow()
     {
@@ -68,6 +72,7 @@ public class Window extends JFrame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(p_windowSize);
         this.setVisible(true);
+        p_fc = new JFileChooser();
     }
 
     /**
@@ -132,7 +137,12 @@ public class Window extends JFrame
           **/
          public void actionPerformed(ActionEvent e)
          {
-             p_tlField.displayImage("../data/Test.png");
+            int returnVal = p_fc.showOpenDialog(Window.this);
+            if (returnVal == JFileChooser.APPROVE_OPTION)
+            {
+                File file = p_fc.getSelectedFile();
+                p_tlField.displayImage(file.getAbsolutePath());
+            }
          }
      }
 

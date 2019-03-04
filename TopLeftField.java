@@ -64,7 +64,9 @@ public class TopLeftField extends Field
     {
         try
         {
-            p_image = ImageIO.read(new File(path));
+            p_image = ImageIO.read(new File(path)).getScaledInstance(p_fieldSize.width,
+                                                                     p_fieldSize.height,
+                                                                     Image.SCALE_DEFAULT);;
             p_displayImage = true;
             repaint();
         }
