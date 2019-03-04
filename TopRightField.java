@@ -12,6 +12,9 @@ public class TopRightField extends Field
     // Number of buttons on a column
     private int p_nbButtonColumn = 1;
 
+    // List of buttons on this field
+    private UploadButton p_upButton = null;
+
     /**
      * Creates the top right field.
      * @param window The current window
@@ -21,6 +24,7 @@ public class TopRightField extends Field
     public TopRightField(Window window, int width, int height)
     {
         super(window, width, height);
+        initButtons();
         initField(Color.YELLOW);
         initTopRightField();
     }
@@ -33,8 +37,17 @@ public class TopRightField extends Field
     public TopRightField(Window window, Dimension size)
     {
         super(window, size);
+        initButtons();
         initField(Color.YELLOW);
         initTopRightField();
+    }
+
+    /**
+     * Creates and initializes the different buttons.
+     **/
+    public void initButtons()
+    {
+        p_upButton = new UploadButton("Upload");
     }
 
     /**
@@ -46,6 +59,15 @@ public class TopRightField extends Field
         this.setLayout(new GridLayout(p_nbButtonRow, p_nbButtonColumn));
 
         // Adds a new button
-        this.add(new JButton("Upload"));
+        this.add(p_upButton);
+    }
+
+    /**
+     * Returns the upload button.
+     * @return An UploadButton instance.
+     **/
+    public UploadButton getUploadButton()
+    {
+        return p_upButton;
     }
 }

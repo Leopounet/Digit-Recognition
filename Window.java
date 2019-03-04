@@ -4,7 +4,7 @@ import javax.imageio.*;
 import java.io.*;
 import java.awt.event.*;
 
-public class Window extends JFrame
+public class Window extends JFrame implements ActionListener
 {
     // Used to store the width and height of the window in pixels
     private Dimension p_windowSize = null;
@@ -12,18 +12,25 @@ public class Window extends JFrame
     // Pane of the window
     private JPanel p_contentPane = null;
 
+    // The training dataset
+    private DataSet p_dataSet = null;
+
+    // Path to the training sets
+    private String p_trainingImagesPath = "../data/train-images.idx3-ubyte";
+    private String p_trainingLabelsPath = "../data/train-labels.idx1-ubyte";
+
+    // Fields on the window
+    private TopLeftField p_tlField = null;
+    private TopRightField p_trField = null;
+    private MiddleField p_mField = null;
+    private BottomField p_bField = null;
+
     // Fields sizes
     private Dimension p_topLeftFieldSize = null;
     private Dimension p_topRightFieldSize = null;
     private Dimension p_middleFieldSize = null;
     private Dimension p_bottomFieldSize = null;
 
-    // Path to the training sets
-    private String p_trainingImagesPath = "../data/train-images.idx3-ubyte";
-    private String p_trainingLabelsPath = "../data/train-labels.idx1-ubyte";
-
-    // The training dataset
-    private DataSet p_dataSet = null;
 
     /**
      * Creates a new window object.
@@ -80,11 +87,20 @@ public class Window extends JFrame
         p_middleFieldSize = new Dimension(p_windowSize.width, 3 * p_windowSize.height / 10);
         p_bottomFieldSize = new Dimension(p_windowSize.width, 2 * p_windowSize.height / 10);
 
-        // Creates the four main zones and add them to the content pane
-        addField(new TopLeftField(this, p_topLeftFieldSize), 0, 0, 1, 1);
-        addField(new TopRightField(this, p_topRightFieldSize), 1, 0, 1, 1);
-        addField(new MiddleField(this, p_middleFieldSize), 0, 1, 2, 1);
-        addField(new BottomField(this, p_bottomFieldSize), 0, 2, 2, 1);
+        // Creates the four main zones
+        p_tlField = new TopLeftField(this, p_topLeftFieldSize);
+        p_trField = new TopRightField(this, p_topRightFieldSize);
+        p_mField = new MiddleField(this, p_middleFieldSize);
+        p_bField = new BottomField(this, p_bottomFieldSize);
+
+        // Add the window to the list of listener of buttons of the top right field
+        p_trField.getUploadButton().addActionListener(this);
+
+        // Adds them to the content pane
+        addField(p_tlField, 0, 0, 1, 1);
+        addField(p_trField, 1, 0, 1, 1);
+        addField(p_mField, 0, 1, 2, 1);
+        addField(p_bField, 0, 2, 2, 1);
     }
 
     /**
@@ -103,6 +119,16 @@ public class Window extends JFrame
          gbc.gridheight = height;
          gbc.gridwidth = width;
          this.getContentPane().add(zone, gbc);
+     }
+
+     /**
+      * Action listener of the window so that the state of the window can be
+      * modified.
+      * @param e The event information
+      **/
+     public void actionPerformed(ActionEvent e)
+     {
+         System.out.println("Hello");
      }
 
     /**
