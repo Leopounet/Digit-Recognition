@@ -224,13 +224,6 @@ public class DataSet
             p_labelDistance[index] = computeDistance(index);
         }
         Arrays.sort(p_labelDistance, new LabelDistanceCompare());
-        computeProbabilities();
-        for(int index = 0; index < 10; index++)
-        {
-            System.out.printf("%d has %.2f percent chance to be the drawn image.\n", index, p_probabilities[index] * 100);
-            // System.out.println(index + " has " + p_probabilities[index] * 100 + "% chance to be the drawn image.");
-        }
-        System.out.println("");
     }
 
     /**
@@ -252,8 +245,9 @@ public class DataSet
     /**
      * Computes the probabilities ofeach possible numbers.
      **/
-    private void computeProbabilities()
+    public double[] computeProbabilities(Image image)
     {
+        computeDistances(image);
         resetProbabilities();
         for(int index = 0; index < p_kValue; index++)
         {
@@ -264,6 +258,7 @@ public class DataSet
         {
             p_probabilities[index] /= p_kValue;
         }
+        return p_probabilities;
     }
 
     /**

@@ -34,6 +34,9 @@ public class Window extends JFrame
     // Use to browse files
     private JFileChooser p_fc = null;
 
+    // Current directory of the user
+    File workingDirectory = new File(System.getProperty("user.dir"));
+
     // Current uploaded image
     private Image p_uploadedImage = null;
 
@@ -140,6 +143,7 @@ public class Window extends JFrame
           **/
          public void actionPerformed(ActionEvent e)
          {
+            p_fc.setCurrentDirectory(workingDirectory);
             int returnVal = p_fc.showOpenDialog(Window.this);
             if (returnVal == JFileChooser.APPROVE_OPTION)
             {
@@ -150,7 +154,7 @@ public class Window extends JFrame
                     p_uploadedImage = p_uploadedImage.getScaledInstance(p_dataSet.getNbPixelRows(),
                                                                         p_dataSet.getNbPixelColumns(),
                                                                         Image.SCALE_DEFAULT);
-                    p_dataSet.computeDistances(p_uploadedImage);
+                    p_mField.drawDiagram(p_dataSet.computeProbabilities(p_uploadedImage));
                 }
             }
          }
