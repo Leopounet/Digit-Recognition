@@ -7,6 +7,12 @@ import java.awt.image.BufferedImage;
 
 public class TopLeftField extends Field
 {
+    // If true, an image should be displayed
+    private boolean p_displayImage = false;
+
+    // Image to display
+    private Image p_image = null;
+
     /**
      * Creates the top left field.
      * @param width The width of the newly created field in pixel
@@ -26,5 +32,49 @@ public class TopLeftField extends Field
     {
         super(size);
         initField(Color.RED);
+    }
+
+    /**
+     * Overrides the paintComponent method.
+     * @param g The graphic component to use to draw.
+     **/
+    public void paintComponent (Graphics g){
+        if(p_displayImage == true)
+        {
+            paintImage(g);
+        }
+    }
+
+    /**
+     * Paints the image to the canvas.
+     * @param g The graphic component to use to draw.
+     **/
+    private void paintImage(Graphics g)
+    {
+        g.drawImage(p_image, 0, 0, this);
+        p_displayImage = false;
+        p_image = null;
+    }
+
+    /**
+     * If possible, displays the image given as parameter.
+     * @param path The path to the image.
+     **/
+    public void displayImage(String path)
+    {
+        try
+        {
+            p_image = ImageIO.read(new File(path));
+            p_displayImage = true;
+            repaint();
+        }
+        catch(FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

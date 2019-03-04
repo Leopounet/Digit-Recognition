@@ -132,7 +132,7 @@ public class Window extends JFrame
           **/
          public void actionPerformed(ActionEvent e)
          {
-             System.out.println("Hello");
+             p_tlField.displayImage("../data/Test.png");
          }
      }
 
