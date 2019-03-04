@@ -1,4 +1,13 @@
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.Image.*;
+import java.awt.*;
+import javax.swing.*;
+import javax.imageio.*;
 import java.io.*;
+import java.awt.event.*;
 
 public class DataSet
 {
@@ -28,6 +37,12 @@ public class DataSet
     // The list of labels
     private int p_listLabels[] = null;
 
+    // List of all euclidian distances and labels
+    private LabelDistance p_labelDistance[] = null;
+
+    // Current image to analyze
+    private int p_pixels[] = null;
+
     /**
      * Creates a new DataSet objects and reads the given files.
      **/
@@ -56,12 +71,14 @@ public class DataSet
             // Sets the size of labels and images arrays
             p_listImages = new int[p_nbImages][p_nbRows * p_nbColumns];
             p_listLabels = new int[p_nbLabels];
+            p_labelDistance = new LabelDistance[p_nbLabels];
 
             // Reads and stores every labels and images
             for(int index = 0; index < p_nbImages; index++)
             {
                 getNextImage(p_imagesStream, index);
                 getNextLabel(p_labelsStream, index);
+                p_labelDistance[index] = new LabelDistance(p_listLabels[index]);
             }
         }
         catch(FileNotFoundException e)
@@ -125,6 +142,21 @@ public class DataSet
     }
 
     /**
+     * Returns the next pixel of the given file.
+     * @param bytes The byte array representing the pixels
+     * @return An integer corresponding to the next pixel of the given file
+     **/
+    private int getNextPixel(byte[] bytes, int index)
+    {
+        int argb = 0;
+        argb += -16777216;
+        argb += ((int) bytes[index] & 0xff);
+        argb += (((int) bytes[index + 1] & 0xff) << 8);
+        argb += (((int) bytes[index + 2] & 0xff) << 16);
+        return argb;
+    }
+
+    /**
      * Adds the next image to the list of images
      * @param fis The file to parse
      **/
@@ -146,6 +178,57 @@ public class DataSet
     private void getNextLabel(FileInputStream fis, int nbLabel) throws IOException
     {
         p_listLabels[nbLabel] = fis.read();
+    }
+
+    /**
+     * Converts an Image into an array of integers.
+     * @param image The image to convert
+     **/
+    private void convertImageToIntArray(Image image)
+    {
+        // Convert ImageIO to BufferedImage
+        BufferedImage bImage = new BufferedImage(image.getWidth(null),
+                                               image.getHeight(null),
+                                               BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2d = bImage.createGraphics();
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+
+        // Get byte array representing every pixels of the image
+        final byte[] bytePixels = ((DataBufferByte) bImage.getRaster().getDataBuffer()).getData();
+
+        // Array to store every pixels as integers
+        p_pixels = new int[bytePixels.length / 3];
+
+        // Computes the pixels seperately in integers
+        for(int pixel = 0; pixel < bytePixels.length; pixel += 3)
+        {
+            p_pixels[pixel / 3] = getNextPixel(bytePixels, pixel);
+        }
+    }
+
+    /**
+     * Computes the euclidian distance between the given image and every training
+     * images.
+     * @param image The image to compare to the training data
+     **/
+    public void computeDistances(Image image)
+    {
+        convertImageToIntArray(image);
+        for(int label = 0; label < p_nbLabels; label++)
+        {
+            p_labelDistance[label].p_distance = computeDistance(label);
+        }
+    }
+
+    /**
+     * Compute the distance between two images.
+     * @param label The index of the image to compare
+     **/
+    private double computeDistance(int label)
+    {
+        return 0;
     }
 
     /**
