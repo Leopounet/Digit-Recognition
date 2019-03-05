@@ -20,10 +20,6 @@ public class Window extends JFrame
     // The training dataset
     private DataSet p_dataSet = null;
 
-    // Path to the training sets
-    private String p_trainingImagesPath = "../data/train-images.idx3-ubyte";
-    private String p_trainingLabelsPath = "../data/train-labels.idx1-ubyte";
-
     // Fields on the window
     private TopLeftField p_tlField = null;
     private TopRightField p_trField = null;
@@ -48,36 +44,38 @@ public class Window extends JFrame
 
     /**
      * Creates a new window object.
+     * @param ds The dataset to use
      * @param width Width in pixels of the newly created window
      * @param height Height in pixels of the newly created window
      **/
-    public Window(int width, int height)
+    public Window(DataSet ds, int width, int height)
     {
         super();
-        init(new Dimension(width, height));
+        init(ds, new Dimension(width, height));
     }
 
     /**
      * Creates a new window object.
+     * @param ds The dataset to use
      * @param size The size of the window in pixels (width, height) format
      **/
-    public Window(Dimension size)
+    public Window(DataSet ds, Dimension size)
     {
         super();
-        init(size);
+        init(ds, size);
     }
 
     /**
      * Initializes the object.
      * @param size The size of the window
      **/
-    private void init(Dimension size)
+    private void init(DataSet ds, Dimension size)
     {
         // Set th size of the window
         p_windowSize = size;
 
         // Creates a new data set
-        p_dataSet = new DataSet(p_trainingImagesPath, p_trainingLabelsPath);
+        p_dataSet = ds;
 
         // Create a new file browser
         p_fc = new JFileChooser();

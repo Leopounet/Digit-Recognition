@@ -212,11 +212,35 @@ public class DataSet
     /**
      * Computes the probabilities ofeach possible numbers.
      * @param image The image to process
+     * @return the probablities of each number.
      **/
     public double[] computeProbabilities(Image image)
     {
+        // Converts the image to an array of ints
+        convertImageToIntArray(image);
+        return hComputeProbabilities();
+    }
+
+    /**
+     * Computes the probabilities ofeach possible numbers.
+     * @param image Array on ints representing an image
+     * @return the probablities of each number.
+     **/
+    public double[] computeProbabilities(int image[])
+    {
+        p_pixels = image;
+        return hComputeProbabilities();
+    }
+
+    /**
+     * Hidden version of compute probabilities. (common part of both overloaded
+     * methods)
+     * @return the probablities of each number.
+     **/
+    private double[] hComputeProbabilities()
+    {
         // Compute the distance between the uploaded image and all the training sample
-        computeDistances(image);
+        computeDistances();
 
         // Sets all probabilities to 0
         resetProbabilities();
@@ -236,27 +260,6 @@ public class DataSet
     }
 
     /**
-     * Computes the euclidian distance between the given image and every training
-     * images.
-     * @param image The image to compare to the training data
-     **/
-    private void computeDistances(Image image)
-    {
-        // Converts the image to an array of ints
-        convertImageToIntArray(image);
-
-        // For every images in the training set, compute the euclidian distance
-        // to the uploaded image
-        for(int index = 0; index < p_nbLabels; index++)
-        {
-            p_labelDistance[index] = computeDistance(index);
-        }
-
-        // Sorts the euclidian distances
-        Arrays.sort(p_labelDistance, new LabelDistanceCompare());
-    }
-
-    /**
      * Converts an Image into an array of integers.
      * @param image The image to convert
      **/
@@ -273,6 +276,23 @@ public class DataSet
 
         // Get byte array representing every pixels of the image
         p_pixels = ((DataBufferInt)bImage.getRaster().getDataBuffer()).getData();
+    }
+
+    /**
+     * Computes the euclidian distance between the given image and every training
+     * images.
+     **/
+    private void computeDistances()
+    {
+        // For every images in the training set, compute the euclidian distance
+        // to the uploaded image
+        for(int index = 0; index < p_nbLabels; index++)
+        {
+            p_labelDistance[index] = computeDistance(index);
+        }
+
+        // Sorts the euclidian distances
+        Arrays.sort(p_labelDistance, new LabelDistanceCompare());
     }
 
     /**
@@ -355,5 +375,23 @@ public class DataSet
     public double[] getProbabilities()
     {
         return p_probabilities;
+    }
+
+    /**
+     * Sets the K value.
+     * @param k The new k to use
+     **/
+    public void setK(int k)
+    {
+        p_kValue = k;
+    }
+
+    /**
+     * Returns the number of images in the dataset.
+     * @return An int corresponding to the number of images
+     **/
+    public int getNbImages()
+    {
+        return p_nbImages;
     }
 }
