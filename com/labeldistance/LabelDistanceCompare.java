@@ -1,3 +1,5 @@
+package com.labeldistance;
+
 import java.util.Comparator;
 
 /**

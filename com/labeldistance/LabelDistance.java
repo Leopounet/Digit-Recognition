@@ -1,3 +1,4 @@
+package com.labeldistance;
 
 /**
  * Class to store a label associated to a probability. Acts as a structure in C.

@@ -1,3 +1,5 @@
+package com.dataset;
+
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.IOException;
@@ -9,6 +11,8 @@ import javax.imageio.*;
 import java.io.*;
 import java.awt.event.*;
 import java.util.Arrays;
+
+import com.labeldistance.*;
 
 public class DataSet
 {
