@@ -11,8 +11,8 @@ import java.awt.event.*;
  **/
 public class BottomField extends Field
 {
-    // The message to print
-    private String p_message = null;
+    // The messages to print
+    private String p_messages[] = null;
 
     // If true, the bottom field is redrawn
     private boolean p_draw = false;
@@ -47,20 +47,27 @@ public class BottomField extends Field
     private void init()
     {
         initField(Color.DARK_GRAY);
+        p_messages = new String[2];
     }
 
     /**
      * Prints the given string.
      * @param message The string to print
+     * @param c The color of the text
+     * @param line The line the text should be displayed at (0, 1, 2, 3)
      **/
-    public void printMessage(String message, Color c)
+    public void printMessage(String message, Color c, int line)
     {
-        p_message = new String(message);
+        p_messages[line] = new String(message);
         p_color = c;
         p_draw = true;
         repaint();
     }
 
+    /**
+     * Overrides the paintComponent method.
+     * @param g The graphic component to use to draw.
+     **/
     public void paintComponent(Graphics g)
     {
         // Super of the paintComponent constructor
@@ -69,10 +76,20 @@ public class BottomField extends Field
         // If true, draw the message
         if(p_draw == true)
         {
-            g.setFont(new Font("default", Font.BOLD, 14));
-            g.setColor(p_color);
-            // Prints the message in black
-            g.drawString(p_message, 5, p_fieldSize.height / 2);
+            int line = 0;
+            for(String s : p_messages)
+            {
+                if(s != null)
+                {
+                    g.setFont(new Font("default", Font.BOLD, 14));
+                    g.setColor(p_color);
+
+                    // Prints the message in black
+                    g.drawString(s, 5, 20 * (line + 1));
+
+                    line++;
+                }
+            }
         }
     }
 }

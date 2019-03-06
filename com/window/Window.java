@@ -175,47 +175,47 @@ public class Window extends JFrame
      {
          if(p_windowSize == null)
          {
-             p_bField.printMessage("Error : Window could not be initialized (no size given)!", Color.RED);
+             p_bField.printMessage("Error : Window could not be initialized (no size given)!", Color.RED, 0);
              return;
          }
 
          if(p_contentPane == null)
          {
-             p_bField.printMessage("Error : Content pane could not be initialized!", Color.RED);
+             p_bField.printMessage("Error : Content pane could not be initialized!", Color.RED, 0);
              return;
          }
 
          if(p_dataSet == null)
          {
-             p_bField.printMessage("Error : Data set has not been loaded, is it in the correct directory?", Color.RED);
+             p_bField.printMessage("Error : Data set has not been loaded, is it in the correct directory?", Color.RED, 0);
              return;
          }
 
          if(p_tlField == null)
          {
-             p_bField.printMessage("Error : Top left field could not be loaded!", Color.RED);
+             p_bField.printMessage("Error : Top left field could not be loaded!", Color.RED, 0);
              return;
          }
 
          if(p_trField == null)
          {
-             p_bField.printMessage("Error : Top right field could not be loaded!", Color.RED);
+             p_bField.printMessage("Error : Top right field could not be loaded!", Color.RED, 0);
              return;
          }
 
          if(p_mField == null)
          {
-             p_bField.printMessage("Error : Middle field could not be loaded!", Color.RED);
+             p_bField.printMessage("Error : Middle field could not be loaded!", Color.RED, 0);
              return;
          }
 
          if(p_bField == null)
          {
-             p_bField.printMessage("Error : Bottom field could not be loaded!", Color.RED);
+             p_bField.printMessage("Error : Bottom field could not be loaded!", Color.RED, 0);
              return;
          }
 
-         p_bField.printMessage("Success : Everything has correctly been loaded!", Color.GREEN);
+         p_bField.printMessage("Success : Everything has correctly been loaded!", Color.GREEN, 0);
      }
 
      /**
@@ -265,7 +265,7 @@ public class Window extends JFrame
 
              if(file == null)
              {
-                 p_bField.printMessage("Error : No file chosen!", Color.RED);
+                 p_bField.printMessage("Error : No file chosen!", Color.RED, 0);
                  return;
              }
 
@@ -274,16 +274,16 @@ public class Window extends JFrame
 
              if(p_uploadedImage == null)
              {
-                 p_bField.printMessage("Error : Image could not be loaded!", Color.RED);
+                 p_bField.printMessage("Error : Image could not be loaded!", Color.RED, 0);
                  return;
              }
          }
          else
          {
-             p_bField.printMessage("Error : File is unreachable or access has been denied or no file has been chosen!", Color.RED);
+             p_bField.printMessage("Error : File is unreachable or access has been denied or no file has been chosen!", Color.RED, 0);
              return;
          }
-         p_bField.printMessage("Success : Image successfully loaded!", Color.GREEN);
+         p_bField.printMessage("Success : Image successfully loaded!", Color.GREEN, 0);
      }
 
      /**
@@ -302,18 +302,42 @@ public class Window extends JFrame
              if(p_uploadedImage != null)
              {
                  // Draw the diagram
-                 p_mField.drawDiagram(p_dataSet.computeProbabilities(p_uploadedImage));
-                 p_bField.printMessage("Success : Diagram has been computed!", Color.GREEN);
+                 double prob[] = p_dataSet.computeProbabilities(p_uploadedImage);
+                 p_mField.drawDiagram(prob);
+                 int max = maxIndex(prob);
+                 p_bField.printMessage("Success : Diagram has been computed!", Color.GREEN, 0);
+                 p_bField.printMessage(String.format("The digit drawn is probably a %d (confidence = %d)",
+                                                     max, (int)(prob[max] * 100)), Color.GREEN, 1);
              }
              else
              {
-                 p_bField.printMessage("Error : Image couldn't be resize!", Color.RED);
+                 p_bField.printMessage("Error : Image couldn't be resize!", Color.RED, 0);
              }
          }
          else
          {
-             p_bField.printMessage("Error : No image loaded!", Color.RED);
+             p_bField.printMessage("Error : No image loaded!", Color.RED, 0);
          }
+     }
+
+     /**
+      * Returns the index of the maximum value of the array.
+      * @param array The array to parse
+      * @return The index of the maximum value of the array
+      **/
+     private int maxIndex(double array[])
+     {
+         int maxIndex = 0;
+         double max = array[0];
+         for(int i = 0; i < array.length; i++)
+         {
+             if(array[i] > max)
+             {
+                 max = array[i];
+                 maxIndex = i;
+             }
+         }
+         return maxIndex;
      }
 
     /**
