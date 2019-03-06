@@ -10,6 +10,6 @@ public class DigitRec
     public static void main(String args[])
     {
         // Main window
-        Window window = new Window(800, 800);
+        MainWindow window = new MainWindow(800, 800);
     }
 }

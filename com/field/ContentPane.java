@@ -6,6 +6,9 @@ import javax.imageio.*;
 import java.io.*;
 import java.awt.event.*;
 
+/**
+ * Content pane of the main window.
+ **/
 public class ContentPane extends JPanel
 {
     // Fields on the window
@@ -66,21 +69,37 @@ public class ContentPane extends JPanel
          this.add(zone, gbc);
      }
 
+     /**
+      * Returns the top left field.
+      * @return A TopLeftField variable
+      **/
      public TopLeftField getTLField()
      {
          return p_tlField;
      }
 
+     /**
+      * Returns the top right field.
+      * @return A TopRightField variable
+      **/
      public TopRightField getTRField()
      {
          return p_trField;
      }
 
+     /**
+      * Returns the middle field.
+      * @return A MiddleField variable
+      **/
      public MiddleField getMField()
      {
          return p_mField;
      }
 
+     /**
+      * Returns the bottom field.
+      * @return A BottomField variable
+      **/
      public BottomField getBField()
      {
          return p_bField;

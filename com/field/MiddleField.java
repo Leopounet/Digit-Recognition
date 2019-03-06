@@ -118,12 +118,16 @@ public class MiddleField extends Field
         g.setColor(Color.BLACK);
         g.setFont(new Font("default", Font.BOLD, 14));
 
+        // Draws the confidence text
         g.drawString("Confidence [%]", 0, 16);
+
+        // Draws the rectangle of the arrow
         g.fillRect(p_fieldSize.width / 20,
                    p_fieldSize.height / 10,
                    p_fieldSize.width / 100 + 1,
                    8 * p_fieldSize.height / 10);
 
+        // Draws the triangle o ntop of the rectangle
         int middle = (2 * p_fieldSize.width / 20 + p_fieldSize.width / 100 + 1) / 2;
         int polygonX[] = { middle,
                            middle - p_fieldSize.width / 40,
