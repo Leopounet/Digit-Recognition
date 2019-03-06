@@ -102,6 +102,9 @@ public class Window extends JFrame
         // Sets the size of the window
         this.setSize(p_windowSize);
 
+        // Makes the window fullscreen by default
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
         // Makes the window visible
         this.setVisible(true);
     }

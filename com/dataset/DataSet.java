@@ -13,6 +13,7 @@ import java.awt.event.*;
 import java.util.Arrays;
 
 import com.labeldistance.*;
+import com.window.*;
 
 public class DataSet
 {
@@ -55,7 +56,10 @@ public class DataSet
     private double p_probabilities[] = null;
 
     // K value for the kNN algorithm
-    private int p_kValue = 1000;
+    private int p_kValue = 0;
+
+    // The loading window to display while loading the data
+    private LoadingWindow p_loadingWindow = null;
 
     /**
      * Creates a new DataSet objects and reads the given files.
@@ -78,6 +82,9 @@ public class DataSet
             p_nbImages = getNextInt(p_imagesStream);
             p_nbLabels = getNextInt(p_labelsStream);
 
+            // Sets the kValue in function of the number of images
+            p_kValue = (int)Math.sqrt((double)p_nbImages);
+
             // Gets the number of rows and columns in the images file
             p_nbRows = getNextInt(p_imagesStream);
             p_nbColumns = getNextInt(p_imagesStream);
@@ -91,13 +98,20 @@ public class DataSet
             p_probabilities = new double[10];
             resetProbabilities();
 
+            // Creates the loading window
+            p_loadingWindow = new LoadingWindow(new Dimension(1000, 300));
+
             // Reads and stores every labels and images
             for(int index = 0; index < p_nbImages; index++)
             {
                 getNextImage(p_imagesStream, index);
                 getNextLabel(p_labelsStream, index);
                 p_labelDistance[index] = new LabelDistance(p_listLabels[index]);
+                p_loadingWindow.setProgression((double)(index) / (double)(p_nbImages));
             }
+
+            // Closes the loading window
+            p_loadingWindow.closeWindow();
         }
         catch(FileNotFoundException e)
         {

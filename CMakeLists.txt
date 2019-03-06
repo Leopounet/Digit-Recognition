@@ -14,7 +14,7 @@ set(LABELDISTANCE "com/labeldistance/")
 set(WINDOW "com/window/")
 
 # Custom command to create directories when cmake .. is used
-add_custom_command(OUTPUT dir.log
+execute_process(
 COMMAND mkdir ${EXT}
 COMMAND mkdir ${DATASET}
 COMMAND mkdir ${FIELD}
@@ -23,7 +23,7 @@ COMMAND mkdir ${WINDOW})
 
 # Make the project (m for make)
 add_custom_target(m
-COMMAND javac ../${DATASET}*.java ../${FIELD}*.java ../${LABELDISTANCE}*.java ../${WINDOW}*.java ../${MAIN}.java
+COMMAND javac ../${DATASET}*.java ../${FIELD}*.java ../${LABELDISTANCE}*.java ../${WINDOW}*.java ../${MAIN}*.java
 COMMAND mv ../${DATASET}*.class ${DATASET}
 COMMAND mv ../${FIELD}*.class ${FIELD}
 COMMAND mv ../${LABELDISTANCE}*.class ${LABELDISTANCE}
