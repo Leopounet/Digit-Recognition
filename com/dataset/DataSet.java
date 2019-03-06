@@ -80,8 +80,8 @@ public class DataSet
             // Gets the size of both files
             p_nbImages = getNextInt(p_imagesStream);
             p_nbLabels = getNextInt(p_labelsStream);
-            // p_nbImages = 1;
-            // p_nbLabels = 1;
+            p_nbImages = 1;
+            p_nbLabels = 1;
 
             // Sets the kValue in function of the number of images
             p_kValue = (int)Math.sqrt((double)p_nbImages);

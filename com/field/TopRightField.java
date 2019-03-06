@@ -12,7 +12,7 @@ import java.awt.event.*;
 public class TopRightField extends Field
 {
     // Number of buttons on a row
-    private int p_nbButtonRow = 3;
+    private int p_nbButtonRow = 4;
 
     // Number of buttons on a column
     private int p_nbButtonColumn = 1;
@@ -21,6 +21,7 @@ public class TopRightField extends Field
     private JButton p_upButton = null;
     private JButton p_submitButton = null;
     private JButton p_randomImageButton = null;
+    private JButton p_drawButton = null;
 
     /**
      * Creates the top right field.
@@ -67,6 +68,7 @@ public class TopRightField extends Field
         p_upButton = new JButton("Upload");
         p_submitButton = new JButton("Submit");
         p_randomImageButton = new JButton("Random Image");
+        p_drawButton = new JButton("Draw Digit");
     }
 
     /**
@@ -81,6 +83,7 @@ public class TopRightField extends Field
         this.add(p_upButton);
         this.add(p_submitButton);
         this.add(p_randomImageButton);
+        this.add(p_drawButton);
     }
 
     /**
@@ -108,5 +111,14 @@ public class TopRightField extends Field
     public JButton getRandomImageButton()
     {
         return p_randomImageButton;
+    }
+
+    /**
+     * Returns the draw button.
+     * @return An JButton instance.
+     **/
+    public JButton getDrawButton()
+    {
+        return p_drawButton;
     }
 }
