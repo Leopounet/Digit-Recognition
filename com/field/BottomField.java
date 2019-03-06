@@ -37,6 +37,6 @@ public class BottomField extends Field
      **/
     private void init()
     {
-        initField(Color.BLUE);
+        initField(Color.WHITE);
     }
 }

@@ -26,7 +26,7 @@ public class TopLeftField extends Field
     public TopLeftField(int width, int height)
     {
         super(width, height);
-        initField(Color.RED);
+        initField(Color.WHITE);
     }
 
     /**
@@ -36,7 +36,7 @@ public class TopLeftField extends Field
     public TopLeftField(Dimension size)
     {
         super(size);
-        initField(Color.RED);
+        initField(Color.WHITE);
     }
 
     /**
@@ -44,6 +44,10 @@ public class TopLeftField extends Field
      * @param g The graphic component to use to draw.
      **/
     public void paintComponent (Graphics g){
+        
+        // Super of the paintComponent constructor
+        super.paintComponent(g);
+
         if(p_displayImage == true)
         {
             paintImage(g);

@@ -51,7 +51,7 @@ public class MiddleField extends Field
     private void init()
     {
         // Initializes the field
-        initField(Color.GREEN);
+        initField(Color.GRAY);
 
         // Creates a new array of ten rectangles
         p_rectangles = new Rectangle[p_nbRectangles];
@@ -85,6 +85,27 @@ public class MiddleField extends Field
         // If the button to submit as been clicked
         if(p_draw)
         {
+            // Draws an arrow on the lef side of the diagram and writes confidence[%]
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("default", Font.BOLD, 14));
+
+            g.drawString("Confidence [%]", 0, 16);
+            g.fillRect(p_fieldSize.width / 20,
+                       p_fieldSize.height / 10,
+                       p_fieldSize.width / 100 + 1,
+                       8 * p_fieldSize.height / 10);
+
+            int middle = (2 * p_fieldSize.width / 20 + p_fieldSize.width / 100 + 1) / 2;
+            int polygonX[] = { middle,
+                               middle - p_fieldSize.width / 40,
+                               middle + p_fieldSize.width / 40 };
+
+            int polygonY[] = { p_fieldSize.height / 20,
+                                p_fieldSize.height / 10,
+                                p_fieldSize.height / 10 };
+            g.fillPolygon(polygonX, polygonY, 3);
+
+
             // For every rectangles
             for(int index = 0; index < p_nbRectangles; index++)
             {
@@ -95,15 +116,15 @@ public class MiddleField extends Field
                            p_rectangles[index].height);
 
                 // Makes the font bold red
-                g.setFont(new Font("default", Font.BOLD, 16));
                 g.setColor(Color.RED);
 
                 // Draws the probability of the current digit (above the column)
                 // The positions have been chosen arbitrarly
-                g.drawString(String.format("%.2f%%", p_probabilities[index]), p_rectangles[index].x +
+                g.drawString(String.format("%d%%", (int)(p_probabilities[index] * 100)),
+                                                     p_rectangles[index].x +
                                                      p_rectangles[index].width / 8,
                                                      p_rectangles[index].y -
-                                                     p_fieldSize.height / 16);
+                                                     p_fieldSize.height / 64);
                 // Makes the font black
                 g.setColor(Color.BLACK);
 
@@ -112,6 +133,7 @@ public class MiddleField extends Field
                 g.drawString(String.format("%d", index), p_rectangles[index].x +
                                                          p_fieldSize.width / 30,
                                                          19 * p_fieldSize.height / 20);
+
             }
 
             // Set to false, to not draw again until asked for
@@ -127,28 +149,28 @@ public class MiddleField extends Field
     public void drawDiagram(double probabilities[])
     {
         // Width of every rectangles
-        double rectWidth = p_fieldSize.width / 12;
+        int rectWidth = p_fieldSize.width / 12;
 
         // This is so there is a little space under the column to write th digits
-        double upWardShift = p_fieldSize.height / 10;
+        int upWardShift = p_fieldSize.height / 10;
 
         // Size of the zone the plot will be drawn (80% of the field)
-        double plotHeight = 8 * p_fieldSize.height / 10;
+        int plotHeight = 8 * p_fieldSize.height / 10;
 
         // For every rectangles
         for(int index = 0; index < p_nbRectangles; index++)
         {
             // Left most point of the current rectangle
-            double startRectX = (index + 1) * rectWidth;
+            int startRectX = (index + 1) * rectWidth + rectWidth;
 
             // Height of teh rectangle
-            double rectHeight = plotHeight * probabilities[index];
+            int rectHeight = (int)(plotHeight * probabilities[index] + 10);
 
             // Up most point of the current rectangle
-            double startRectY = upWardShift + (plotHeight - rectHeight);
+            int startRectY = 9 * p_fieldSize.height / 10 - rectHeight;
 
             // Creates and stores the rectangle corresponding to the current digit
-            p_rectangles[index] = new Rectangle((int)startRectX, (int)startRectY, (int)rectWidth, (int)rectHeight);
+            p_rectangles[index] = new Rectangle(startRectX, startRectY, rectWidth, rectHeight);
         }
 
         // Set to true so that paintComponent draws

@@ -60,7 +60,7 @@ public class LoadingField extends Field
     private void init()
     {
         // Initializes the field
-        initField(Color.WHITE);
+        initField(Color.GRAY);
 
         // Sets the left most point of the loading bar (constant)
         p_loadingX = p_fieldSize.width / 50;
@@ -120,7 +120,7 @@ public class LoadingField extends Field
             g.setFont(new Font("default", Font.BOLD, 16));
             g.drawString(String.format("Loading training files, please wait... [%.2f%%]",
                                                  p_progression * 100),
-                                                 p_fieldSize.width / 10,
+                                                 p_loadingX,
                                                  19 * p_fieldSize.height / 20);
 
             // Set the loading bar to be green

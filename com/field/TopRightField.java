@@ -51,7 +51,7 @@ public class TopRightField extends Field
         initButtons();
 
         // Inits the field
-        initField(Color.YELLOW);
+        initField(Color.GRAY);
 
         // Init the top right field
         initTopRightField();
