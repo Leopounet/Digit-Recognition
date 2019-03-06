@@ -15,8 +15,14 @@ import java.util.Arrays;
 import com.labeldistance.*;
 import com.window.*;
 
+/**
+ * Stores the data set and computes the probabilities.
+ **/
 public class DataSet
 {
+    // The loading window to display while loading the data
+    private LoadingWindow p_loadingWindow = null;
+
     // Input stream of images
     private FileInputStream p_imagesStream = null;
 
@@ -31,23 +37,19 @@ public class DataSet
     private int p_nbImages = 0;
     private int p_nbLabels = 0;
 
-    // Number of rows in the image dataset
+    // Number of rows and columns in the image dataset
     private int p_nbRows = 0;
-
-    // Number of columns in the image dataset
     private int p_nbColumns = 0;
 
-    // The list of images
+    // The list of images and labels
     private int p_listImages[][] = null;
-
-    // The list of labels
     private int p_listLabels[] = null;
 
     // List of all euclidian distances and labels
     private LabelDistance p_labelDistance[] = null;
 
     // Current image to analyze
-    private int p_pixels[] = null;
+    private int p_currentImage[] = null;
 
     // array containing the probabily of the number being te one drawn
     // index 0 --> probability that 0 has been drawn
@@ -57,9 +59,6 @@ public class DataSet
 
     // K value for the kNN algorithm
     private int p_kValue = 0;
-
-    // The loading window to display while loading the data
-    private LoadingWindow p_loadingWindow = null;
 
     /**
      * Creates a new DataSet objects and reads the given files.
@@ -81,8 +80,8 @@ public class DataSet
             // Gets the size of both files
             p_nbImages = getNextInt(p_imagesStream);
             p_nbLabels = getNextInt(p_labelsStream);
-            // p_nbImages = 1;
-            // p_nbLabels = 1;
+            p_nbImages = 1;
+            p_nbLabels = 1;
 
             // Sets the kValue in function of the number of images
             p_kValue = (int)Math.sqrt((double)p_nbImages);
@@ -98,7 +97,6 @@ public class DataSet
 
             // Initializes the array of probabilities
             p_probabilities = new double[10];
-            resetProbabilities();
 
             // Creates the loading window
             p_loadingWindow = new LoadingWindow(new Dimension(1000, 300));
@@ -108,7 +106,7 @@ public class DataSet
             {
                 getNextImage(p_imagesStream, index);
                 getNextLabel(p_labelsStream, index);
-                p_labelDistance[index] = new LabelDistance(p_listLabels[index]);
+                p_labelDistance[index] = new LabelDistance(0, 0);
                 p_loadingWindow.setProgression((double)(index) / (double)(p_nbImages));
             }
 
@@ -159,6 +157,24 @@ public class DataSet
     }
 
     /**
+     * Adds the next image to the list of images.
+     * @param fis The file to parse
+     * @param nbImage The current image being processed
+     **/
+    private void getNextImage(FileInputStream fis, int nbImage) throws IOException
+    {
+        // Loops through every pixels
+        for(int y = 0; y < p_nbRows; y++)
+        {
+            for(int x = 0; x < p_nbColumns; x++)
+            {
+                // Stores each pixels
+                p_listImages[nbImage][y * p_nbRows + x] = getNextPixel(fis);
+            }
+        }
+    }
+
+    /**
      * Returns the next pixel of the given file.
      * @param fis The file to parse
      * @return A integer corresponding to the next pixel of the given file
@@ -198,24 +214,6 @@ public class DataSet
     }
 
     /**
-     * Adds the next image to the list of images.
-     * @param fis The file to parse
-     * @param nbImage The current image being processed
-     **/
-    private void getNextImage(FileInputStream fis, int nbImage) throws IOException
-    {
-        // Loops through every pixels
-        for(int y = 0; y < p_nbRows; y++)
-        {
-            for(int x = 0; x < p_nbColumns; x++)
-            {
-                // Stores each pixels
-                p_listImages[nbImage][y * p_nbRows + x] = getNextPixel(fis);
-            }
-        }
-    }
-
-    /**
      * Adds the next label to the list of labels.
      * @param fis The file to parse
      * @param nbLabel The current index of the label being processed
@@ -244,7 +242,7 @@ public class DataSet
      **/
     public double[] computeProbabilities(int image[])
     {
-        p_pixels = image;
+        p_currentImage = image;
         return hComputeProbabilities();
     }
 
@@ -256,15 +254,15 @@ public class DataSet
     {
         // Convert Image to BufferedImage
         BufferedImage bImage = new BufferedImage(image.getWidth(null),
-                                               image.getHeight(null),
-                                               BufferedImage.TYPE_INT_ARGB);
+                                                 image.getHeight(null),
+                                                 BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g2d = bImage.createGraphics();
         g2d.drawImage(image, 0, 0, null);
         g2d.dispose();
 
         // Get byte array representing every pixels of the image
-        p_pixels = ((DataBufferInt)bImage.getRaster().getDataBuffer()).getData();
+        p_currentImage = ((DataBufferInt)bImage.getRaster().getDataBuffer()).getData();
     }
 
     /**
@@ -278,7 +276,7 @@ public class DataSet
         computeDistances();
 
         // Sets all probabilities to 0
-        resetProbabilities();
+        p_probabilities = new double[10];
 
         // For 0 to K, count the number of each digits
         for(int index = 0; index < p_kValue; index++)
@@ -323,27 +321,12 @@ public class DataSet
         // For every pixels in the image, compute the distance squared
         for(int pixel = 0; pixel < p_nbRows *  p_nbColumns; pixel++)
         {
-            distance += Math.pow(p_listImages[index][pixel] - p_pixels[pixel], 2);
+            distance += Math.pow(p_listImages[index][pixel] - p_currentImage[pixel], 2);
         }
 
         // Creates a new LabelDistance to associate a distance to a label
-        LabelDistance ld = new LabelDistance(p_listLabels[index]);
-
-        // Computes the square root of the computed "distance"
-        ld.p_distance = Math.sqrt(distance);
+        LabelDistance ld = new LabelDistance(Math.sqrt(distance), p_listLabels[index]);
         return ld;
-    }
-
-    /**
-     * Resets the probabilties.
-     **/
-    private void resetProbabilities()
-    {
-        // For every index of the array, set it to 0
-        for(int index = 0; index < p_probabilities.length; index++)
-        {
-            p_probabilities[index] = 0;
-        }
     }
 
     /**

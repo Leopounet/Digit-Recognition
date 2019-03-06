@@ -16,9 +16,9 @@ public class LabelDistance
      * between the image and the uploaded image.
      * @param label The label of the image
      **/
-    public LabelDistance(int label)
+    public LabelDistance(double distance, int label)
     {
         p_label = label;
-        p_distance = -1;
+        p_distance = distance;
     }
 }

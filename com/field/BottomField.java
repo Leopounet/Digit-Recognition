@@ -6,19 +6,21 @@ import javax.imageio.*;
 import java.io.*;
 import java.awt.event.*;
 
+import com.message.*;
+
 /**
  * Represents the bottom field of this window.
  **/
 public class BottomField extends Field
 {
     // The messages to print
-    private String p_messages[] = null;
+    private Message p_messages[] = null;
 
     // If true, the bottom field is redrawn
     private boolean p_draw = false;
 
-    // the color of the message
-    private Color p_color = Color.BLACK;
+    // The maximum number of messages displayable at once
+    private int p_maxMessages = 4;
 
     /**
      * Creates the bottom field.
@@ -47,7 +49,8 @@ public class BottomField extends Field
     private void init()
     {
         initField(Color.DARK_GRAY);
-        p_messages = new String[2];
+        p_messages = new Message[p_maxMessages];
+        resetMessages();
     }
 
     /**
@@ -58,8 +61,7 @@ public class BottomField extends Field
      **/
     public void printMessage(String message, Color c, int line)
     {
-        p_messages[line] = new String(message);
-        p_color = c;
+        p_messages[line] = new Message(message, c);
         p_draw = true;
         repaint();
     }
@@ -77,19 +79,27 @@ public class BottomField extends Field
         if(p_draw == true)
         {
             int line = 0;
-            for(String s : p_messages)
+            for(Message m : p_messages)
             {
-                if(s != null)
-                {
-                    g.setFont(new Font("default", Font.BOLD, 14));
-                    g.setColor(p_color);
+                g.setFont(new Font("default", Font.BOLD, 14));
+                g.setColor(m.p_color);
 
-                    // Prints the message in black
-                    g.drawString(s, 5, 20 * (line + 1));
+                // Prints the message in black
+                g.drawString(m.p_message, 5, 20 * (line + 1));
 
-                    line++;
-                }
+                line++;
             }
+        }
+    }
+
+    /**
+     * Sets every message to the empty string.
+     **/
+    public void resetMessages()
+    {
+        for(int i = 0; i < p_maxMessages; i++)
+        {
+            p_messages[i] = new Message("", Color.BLACK);
         }
     }
 }

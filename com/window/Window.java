@@ -15,28 +15,24 @@ public class Window extends JFrame
     private Dimension p_windowSize = null;
 
     // Pane of the window
-    private JPanel p_contentPane = null;
+    private ContentPane p_contentPane = null;
 
     // The training dataset
     private DataSet p_dataSet = null;
 
-    // Fields on the window
-    private TopLeftField p_tlField = null;
-    private TopRightField p_trField = null;
-    private MiddleField p_mField = null;
-    private BottomField p_bField = null;
+    // Path to the training sets
+    private static String trainingImagesPath = "../data/train-images.idx3-ubyte";
+    private static String trainingLabelsPath = "../data/train-labels.idx1-ubyte";
 
-    // Fields sizes
-    private Dimension p_topLeftFieldSize = null;
-    private Dimension p_topRightFieldSize = null;
-    private Dimension p_middleFieldSize = null;
-    private Dimension p_bottomFieldSize = null;
+    // Path to the tests sets
+    private static String testImagesPath = "../data/t10k-images.idx3-ubyte";
+    private static String testLabelsPath = "../data/t10k-labels.idx1-ubyte";
 
     // Use to browse files
     private JFileChooser p_fc = null;
 
     // Current directory of the user
-    File p_directory = new File(System.getProperty("user.dir"));
+    private File p_directory = new File(System.getProperty("user.dir"));
 
     // Current uploaded image
     private Image p_uploadedImage = null;
@@ -48,10 +44,10 @@ public class Window extends JFrame
      * @param width Width in pixels of the newly created window
      * @param height Height in pixels of the newly created window
      **/
-    public Window(DataSet ds, int width, int height)
+    public Window(int width, int height)
     {
         super();
-        init(ds, new Dimension(width, height));
+        init(new Dimension(width, height));
     }
 
     /**
@@ -59,23 +55,23 @@ public class Window extends JFrame
      * @param ds The dataset to use
      * @param size The size of the window in pixels (width, height) format
      **/
-    public Window(DataSet ds, Dimension size)
+    public Window(Dimension size)
     {
         super();
-        init(ds, size);
+        init(size);
     }
 
     /**
      * Initializes the object.
      * @param size The size of the window
      **/
-    private void init(DataSet ds, Dimension size)
+    private void init(Dimension size)
     {
         // Set th size of the window
         p_windowSize = size;
 
         // Creates a new data set
-        p_dataSet = ds;
+        p_dataSet = new DataSet(trainingImagesPath, trainingLabelsPath);;
 
         // Create a new file browser
         p_fc = new JFileChooser();
@@ -85,9 +81,6 @@ public class Window extends JFrame
 
         // Creates the different fields
         createFields();
-
-        // Verifies that everything has correctly been initialized
-        testInit();
     }
 
     /**
@@ -119,104 +112,16 @@ public class Window extends JFrame
     private void createFields()
     {
         // Create and add the content pane of the JFrame
-        p_contentPane = new JPanel(new GridBagLayout());
-        p_contentPane.setPreferredSize(p_windowSize);
-        this.setContentPane(p_contentPane);
-
-        // Sets the sizes of the different fields
-        // These sizes have been choosen arbitrarly
-        p_topLeftFieldSize = new Dimension(8 * p_windowSize.width / 10, p_windowSize.height / 2);
-        p_topRightFieldSize = new Dimension(2 * p_windowSize.width / 10, p_windowSize.height / 2);
-        p_middleFieldSize = new Dimension(p_windowSize.width, 4 * p_windowSize.height / 10);
-        p_bottomFieldSize = new Dimension(p_windowSize.width, 1 * p_windowSize.height / 10);
-
-        // Creates the four main zones
-        p_tlField = new TopLeftField(p_topLeftFieldSize);
-        p_trField = new TopRightField(p_topRightFieldSize);
-        p_mField = new MiddleField(p_middleFieldSize);
-        p_bField = new BottomField(p_bottomFieldSize);
+        p_contentPane = new ContentPane(p_windowSize);
 
         // Add the window to the list of listener of buttons of the top right field
-        p_trField.getUploadButton().addActionListener(new UploadButtonListener());
-        p_trField.getSubmitButton().addActionListener(new SubmitButtonListener());
+        p_contentPane.getTRField().getUploadButton().addActionListener(new UploadButtonListener());
+        p_contentPane.getTRField().getSubmitButton().addActionListener(new SubmitButtonListener());
 
-        // Adds them to the content pane
-        addField(p_tlField, 0, 0, 1, 1);
-        addField(p_trField, 1, 0, 1, 1);
-        addField(p_mField, 0, 1, 2, 1);
-        addField(p_bField, 0, 2, 2, 1);
+        // Sets the content pane
+        this.setContentPane(p_contentPane);
+        printMessage("Success : Everyting has been succesfullyy loaded!", Color.GREEN, 0, true);
     }
-
-    /**
-     * Adds a field to the content pane.
-     * @param zone The zone to add
-     * @param x The position of the field on the current row (in "field" unit)
-     * @param y The position of the field on the current column (in "field" unit)
-     * @param width The width of the field (in "field" unit)
-     * @param height The height of the field (in "field" unit)
-     **/
-     private void addField(JPanel zone, int x, int y, int width, int height)
-     {
-         // Sets the gridbagconstraints so that the field is placed correctly
-         GridBagConstraints gbc = new GridBagConstraints();
-         gbc.gridx = x;
-         gbc.gridy = y;
-         gbc.gridheight = height;
-         gbc.gridwidth = width;
-
-         // Adds the field at the right position
-         this.getContentPane().add(zone, gbc);
-     }
-
-     /**
-      * Verifies that everything has correctly been initialized.
-      **/
-     private void testInit()
-     {
-         if(p_windowSize == null)
-         {
-             p_bField.printMessage("Error : Window could not be initialized (no size given)!", Color.RED, 0);
-             return;
-         }
-
-         if(p_contentPane == null)
-         {
-             p_bField.printMessage("Error : Content pane could not be initialized!", Color.RED, 0);
-             return;
-         }
-
-         if(p_dataSet == null)
-         {
-             p_bField.printMessage("Error : Data set has not been loaded, is it in the correct directory?", Color.RED, 0);
-             return;
-         }
-
-         if(p_tlField == null)
-         {
-             p_bField.printMessage("Error : Top left field could not be loaded!", Color.RED, 0);
-             return;
-         }
-
-         if(p_trField == null)
-         {
-             p_bField.printMessage("Error : Top right field could not be loaded!", Color.RED, 0);
-             return;
-         }
-
-         if(p_mField == null)
-         {
-             p_bField.printMessage("Error : Middle field could not be loaded!", Color.RED, 0);
-             return;
-         }
-
-         if(p_bField == null)
-         {
-             p_bField.printMessage("Error : Bottom field could not be loaded!", Color.RED, 0);
-             return;
-         }
-
-         p_bField.printMessage("Success : Everything has correctly been loaded!", Color.GREEN, 0);
-     }
 
      /**
       * Action listener of the upload button.
@@ -265,25 +170,26 @@ public class Window extends JFrame
 
              if(file == null)
              {
-                 p_bField.printMessage("Error : No file chosen!", Color.RED, 0);
+                 printMessage("Error : No file given!", Color.RED, 0, true);
                  return;
              }
 
              // Displays the image
-             p_uploadedImage = p_tlField.displayImage(file.getAbsolutePath());
+             p_uploadedImage = p_contentPane.getTLField().displayImage(file.getAbsolutePath());
 
              if(p_uploadedImage == null)
              {
-                 p_bField.printMessage("Error : Image could not be loaded!", Color.RED, 0);
+                 printMessage("Error : Image could not be loaded!", Color.RED, 0, true);
                  return;
              }
          }
          else
          {
-             p_bField.printMessage("Error : File is unreachable or access has been denied or no file has been chosen!", Color.RED, 0);
+             printMessage("Error : File is unreachable or access has been denied or no file has been chosen!", Color.RED, 0, true);
              return;
          }
-         p_bField.printMessage("Success : Image successfully loaded!", Color.GREEN, 0);
+         printMessage("Success : Image successfully loaded!", Color.GREEN, 0, true);
+         printMessage("Success : Press submit to find out which digit is maybe drawn...", Color.BLUE, 1, false);
      }
 
      /**
@@ -303,21 +209,42 @@ public class Window extends JFrame
              {
                  // Draw the diagram
                  double prob[] = p_dataSet.computeProbabilities(p_uploadedImage);
-                 p_mField.drawDiagram(prob);
+                 p_contentPane.getMField().drawDiagram(prob);
                  int max = maxIndex(prob);
-                 p_bField.printMessage("Success : Diagram has been computed!", Color.GREEN, 0);
-                 p_bField.printMessage(String.format("The digit drawn is probably a %d (confidence = %d%%)",
-                                                     max, (int)(prob[max] * 100)), Color.GREEN, 1);
+
+                 printMessage("Success : Diagram has been computed!", Color.GREEN, 0, true);
+                 printMessage(String.format("The digit drawn is probably a %d (confidence = %d%%)", max,
+                                                                                                    (int)(prob[max] * 100)),
+                                                                                                    Color.GREEN,
+                                                                                                    1,
+                                                                                                    false);
              }
              else
              {
-                 p_bField.printMessage("Error : Image couldn't be resize!", Color.RED, 0);
+                 printMessage("Error : Image couldn't be resize!", Color.RED, 0, true);
              }
          }
          else
          {
-             p_bField.printMessage("Error : No image loaded!", Color.RED, 0);
+             printMessage("Error : No image loaded!", Color.RED, 0, true);
          }
+     }
+
+     /**
+      * Sends a message to print to the bottom field.
+      * @param message The message to print
+      * @param c The color of the message to print
+      * @param line The line to print the message at (starts at 0)
+      * @param reset If true, deleted every previous messages
+      **/
+     private void printMessage(String message, Color c, int line, boolean reset)
+     {
+         // Removes every previous messages
+         if(reset)
+         {
+             p_contentPane.getBField().resetMessages();
+         }
+         p_contentPane.getBField().printMessage(message, c, line);
      }
 
      /**
