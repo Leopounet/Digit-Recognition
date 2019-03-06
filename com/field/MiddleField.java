@@ -85,60 +85,104 @@ public class MiddleField extends Field
         // If the button to submit as been clicked
         if(p_draw)
         {
-            // Draws an arrow on the lef side of the diagram and writes confidence[%]
-            g.setColor(Color.BLACK);
-            g.setFont(new Font("default", Font.BOLD, 14));
 
-            g.drawString("Confidence [%]", 0, 16);
-            g.fillRect(p_fieldSize.width / 20,
-                       p_fieldSize.height / 10,
-                       p_fieldSize.width / 100 + 1,
-                       8 * p_fieldSize.height / 10);
-
-            int middle = (2 * p_fieldSize.width / 20 + p_fieldSize.width / 100 + 1) / 2;
-            int polygonX[] = { middle,
-                               middle - p_fieldSize.width / 40,
-                               middle + p_fieldSize.width / 40 };
-
-            int polygonY[] = { p_fieldSize.height / 20,
-                                p_fieldSize.height / 10,
-                                p_fieldSize.height / 10 };
-            g.fillPolygon(polygonX, polygonY, 3);
-
+            drawArrow(g);
 
             // For every rectangles
             for(int index = 0; index < p_nbRectangles; index++)
             {
-                // Draws the rectangle
-                g.fillRect(p_rectangles[index].x,
-                           p_rectangles[index].y,
-                           p_rectangles[index].width,
-                           p_rectangles[index].height);
 
-                // Makes the font bold red
-                g.setColor(Color.RED);
+                // Draws a rectangle to represent the probabilities
+                drawRectangle(g, index);
 
-                // Draws the probability of the current digit (above the column)
-                // The positions have been chosen arbitrarly
-                g.drawString(String.format("%d%%", (int)(p_probabilities[index] * 100)),
-                                                     p_rectangles[index].x +
-                                                     p_rectangles[index].width / 8,
-                                                     p_rectangles[index].y -
-                                                     p_fieldSize.height / 64);
-                // Makes the font black
-                g.setColor(Color.BLACK);
+                // Draws the probability of teh current digit to be the correct
+                // digit
+                drawProbabilities(g, index);
 
-                // Draws the current digits (under the column)
-                // The positions have been chosen arbitrarly
-                g.drawString(String.format("%d", index), p_rectangles[index].x +
-                                                         p_fieldSize.width / 30,
-                                                         19 * p_fieldSize.height / 20);
-
+                // Draws the digit under teh rectangle
+                drawDigit(g, index);
             }
 
             // Set to false, to not draw again until asked for
             p_draw = false;
         }
+    }
+
+    /**
+     * Draws an arrow to left side of the diagram.
+     * @param g The Graphics component to use
+     **/
+    private void drawArrow(Graphics g)
+    {
+        // Draws an arrow on the lef side of the diagram and writes confidence[%]
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("default", Font.BOLD, 14));
+
+        g.drawString("Confidence [%]", 0, 16);
+        g.fillRect(p_fieldSize.width / 20,
+                   p_fieldSize.height / 10,
+                   p_fieldSize.width / 100 + 1,
+                   8 * p_fieldSize.height / 10);
+
+        int middle = (2 * p_fieldSize.width / 20 + p_fieldSize.width / 100 + 1) / 2;
+        int polygonX[] = { middle,
+                           middle - p_fieldSize.width / 40,
+                           middle + p_fieldSize.width / 40 };
+
+        int polygonY[] = { p_fieldSize.height / 20,
+                            p_fieldSize.height / 10,
+                            p_fieldSize.height / 10 };
+        g.fillPolygon(polygonX, polygonY, 3);
+    }
+
+    /**
+     * Draws a rectangle.
+     * @param g The Graphics component to use
+     * @param index The index of the rectangle to draw
+     **/
+    private void drawRectangle(Graphics g, int index)
+    {
+        // Draws the rectangle
+        g.fillRect(p_rectangles[index].x,
+                   p_rectangles[index].y,
+                   p_rectangles[index].width,
+                   p_rectangles[index].height);
+    }
+
+    /**
+     * Draws the probabilities.
+     * @param g The Graphics component to use
+     * @param index The index of the rectangle to draw
+     **/
+    private void drawProbabilities(Graphics g, int index)
+    {
+        // Makes the font bold red
+        g.setColor(Color.RED);
+
+        // Draws the probability of the current digit (above the column)
+        // The positions have been chosen arbitrarly
+        g.drawString(String.format("%d%%", (int)(p_probabilities[index] * 100)),
+                                             p_rectangles[index].x +
+                                             p_rectangles[index].width / 8,
+                                             p_rectangles[index].y -
+                                             p_fieldSize.height / 64);
+    }
+
+    /**
+     * Draws the digit under the rectangle.
+     * @param g The Graphics component to use
+     * @param index The index of the rectangle to draw
+     **/
+    private void drawDigit(Graphics g, int index)
+    {
+        // Makes the font black
+        g.setColor(Color.BLACK);
+
+        // Draws the current digits (under the column)
+        // The positions have been chosen arbitrarly
+        g.drawString(String.format("%d", index), p_rectangles[index].x +
+                                                 p_fieldSize.width / 30,
+                                                 19 * p_fieldSize.height / 20);
     }
 
     /**

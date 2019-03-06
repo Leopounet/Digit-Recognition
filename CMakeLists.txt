@@ -12,6 +12,7 @@ set(DATASET "com/dataset/")
 set(FIELD "com/field/")
 set(LABELDISTANCE "com/labeldistance/")
 set(WINDOW "com/window/")
+set(IMAGE "com/image/")
 set(MESSAGE "com/message/")
 
 # Custom command to create directories when cmake .. is used
@@ -21,6 +22,7 @@ COMMAND mkdir ${DATASET}
 COMMAND mkdir ${FIELD}
 COMMAND mkdir ${LABELDISTANCE}
 COMMAND mkdir ${WINDOW}
+COMMAND mkdir ${IMAGE}
 COMMAND mkdir ${MESSAGE})
 
 # Make the project (m for make)
@@ -29,12 +31,14 @@ COMMAND javac ../${DATASET}*.java
 ../${FIELD}*.java
 ../${LABELDISTANCE}*.java
 ../${WINDOW}*.java
+../${IMAGE}*.java
 ../${MESSAGE}*.java
 ../${MAIN}*.java
 COMMAND mv ../${DATASET}*.class ${DATASET}
 COMMAND mv ../${FIELD}*.class ${FIELD}
 COMMAND mv ../${LABELDISTANCE}*.class ${LABELDISTANCE}
 COMMAND mv ../${WINDOW}*.class ${WINDOW}
+COMMAND mv ../${IMAGE}*.class ${IMAGE}
 COMMAND mv ../${MESSAGE}*.class ${MESSAGE}
 COMMAND mv ../${MAIN}.class .)
 
@@ -47,5 +51,6 @@ COMMAND rm ${DATASET}*.class
 COMMAND rm ${FIELD}*.class
 COMMAND rm ${LABELDISTANCE}*.class
 COMMAND rm ${WINDOW}*.class
+COMMAND rm ${IMAGE}*.class
 COMMAND rm ${MESSAGE}*.class
 COMMAND rm ${MAIN}.class)
