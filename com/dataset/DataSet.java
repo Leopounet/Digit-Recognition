@@ -81,8 +81,8 @@ public class DataSet
             // Gets the size of both files
             p_nbImages = getNextInt(p_imagesStream);
             p_nbLabels = getNextInt(p_labelsStream);
-            p_nbImages = 1;
-            p_nbLabels = 1;
+            // p_nbImages = 1;
+            // p_nbLabels = 1;
 
             // Sets the kValue in function of the number of images
             p_kValue = (int)Math.sqrt((double)p_nbImages);
@@ -205,12 +205,12 @@ public class DataSet
     private void getNextImage(FileInputStream fis, int nbImage) throws IOException
     {
         // Loops through every pixels
-        for(int x = 0; x < p_nbColumns; x++)
+        for(int y = 0; y < p_nbRows; y++)
         {
-            for(int y = 0; y < p_nbRows; y++)
+            for(int x = 0; x < p_nbColumns; x++)
             {
                 // Stores each pixels
-                p_listImages[nbImage][x * p_nbColumns + y] = getNextPixel(fis);
+                p_listImages[nbImage][y * p_nbRows + x] = getNextPixel(fis);
             }
         }
     }
@@ -249,6 +249,25 @@ public class DataSet
     }
 
     /**
+     * Converts an Image into an array of integers.
+     * @param image The image to convert
+     **/
+    private void convertImageToIntArray(Image image)
+    {
+        // Convert Image to BufferedImage
+        BufferedImage bImage = new BufferedImage(image.getWidth(null),
+                                               image.getHeight(null),
+                                               BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2d = bImage.createGraphics();
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+
+        // Get byte array representing every pixels of the image
+        p_pixels = ((DataBufferInt)bImage.getRaster().getDataBuffer()).getData();
+    }
+
+    /**
      * Hidden version of compute probabilities. (common part of both overloaded
      * methods)
      * @return the probablities of each number.
@@ -273,25 +292,6 @@ public class DataSet
             p_probabilities[index] /= p_kValue;
         }
         return p_probabilities;
-    }
-
-    /**
-     * Converts an Image into an array of integers.
-     * @param image The image to convert
-     **/
-    private void convertImageToIntArray(Image image)
-    {
-        // Convert Image to BufferedImage
-        BufferedImage bImage = new BufferedImage(image.getWidth(null),
-                                               image.getHeight(null),
-                                               BufferedImage.TYPE_INT_ARGB);
-
-        Graphics2D g2d = bImage.createGraphics();
-        g2d.drawImage(image, 0, 0, null);
-        g2d.dispose();
-
-        // Get byte array representing every pixels of the image
-        p_pixels = ((DataBufferInt)bImage.getRaster().getDataBuffer()).getData();
     }
 
     /**
@@ -323,7 +323,7 @@ public class DataSet
         // For every pixels in the image, compute the distance squared
         for(int pixel = 0; pixel < p_nbRows *  p_nbColumns; pixel++)
         {
-            distance += Math.pow(p_pixels[pixel] - p_listImages[index][pixel], 2);
+            distance += Math.pow(p_listImages[index][pixel] - p_pixels[pixel], 2);
         }
 
         // Creates a new LabelDistance to associate a distance to a label

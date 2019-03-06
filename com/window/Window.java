@@ -306,7 +306,7 @@ public class Window extends JFrame
                  p_mField.drawDiagram(prob);
                  int max = maxIndex(prob);
                  p_bField.printMessage("Success : Diagram has been computed!", Color.GREEN, 0);
-                 p_bField.printMessage(String.format("The digit drawn is probably a %d (confidence = %d)",
+                 p_bField.printMessage(String.format("The digit drawn is probably a %d (confidence = %d%%)",
                                                      max, (int)(prob[max] * 100)), Color.GREEN, 1);
              }
              else

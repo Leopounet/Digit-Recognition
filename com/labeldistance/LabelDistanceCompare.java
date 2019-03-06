@@ -16,12 +16,12 @@ public class LabelDistanceCompare implements Comparator<LabelDistance>
         // Objects are ordered by their distance attributes
         if(lda.p_distance > ldb.p_distance)
         {
-            return -1;
+            return 1;
         }
         else if(lda.p_distance == ldb.p_distance)
         {
             return 0;
         }
-        return 1;
+        return -1;
     }
 }

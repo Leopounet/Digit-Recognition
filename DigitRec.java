@@ -24,6 +24,35 @@ public class DigitRec
         Window window = new Window(training, 800, 800);
 
         // Training to find the best K possible
-        // DataSet test = new DataSet(testImagesPath, testLabelsPath);
+        /*DataSet test = new DataSet(testImagesPath, testLabelsPath);
+
+        for(int image = 0; image < test.getNbImages(); image++)
+        {
+            double prob[] = training.computeProbabilities(test.getImage(image));
+            int max = maxIndex(prob);
+            if(max == test.getLabel(image))
+            {
+                System.out.println("Got " + test.getLabel(image) + " right!");
+            }
+            else
+            {
+                System.out.println("Got " + test.getLabel(image) + " wrong! Expected " + test.getLabel(image) + " gave " + max);
+            }
+        }*/
+    }
+
+    public static int maxIndex(double array[])
+    {
+        int max = 0;
+        double maxValue = array[0];
+        for(int i = 0; i < array.length; i++)
+        {
+            if(array[i] > maxValue)
+            {
+                maxValue = array[i];
+                max = i;
+            }
+        }
+        return max;
     }
 }
