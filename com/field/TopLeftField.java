@@ -73,11 +73,11 @@ public class TopLeftField extends Field
     }
 
     /**
-     * If possible, displays the image given as parameter.
+     * If possible, return the selected image.
      * @param path The path to the image.
-     * @return The original image uploaded.
+     * @return The resized image uploaded.
      **/
-    public Image displayImage(String path)
+    public Image getImage(String path)
     {
         // The original image
         Image tmp = null;
@@ -87,16 +87,6 @@ public class TopLeftField extends Field
             tmp = ImageIO.read(new File(path));
 
             tmp = centerDigit(tmp);
-
-            // Resizes the image so that it fits the top left field
-            p_image = tmp.getScaledInstance(p_fieldSize.width,
-                                            p_fieldSize.height,
-                                            Image.SCALE_DEFAULT);
-
-            // p_image = centerDigit(p_image);
-            // Set to true to display an image
-            p_displayImage = true;
-            repaint();
         }
         catch(FileNotFoundException e)
         {
@@ -110,8 +100,26 @@ public class TopLeftField extends Field
     }
 
     /**
+     * Displays the selected image.
+     * @param image The image to display
+     **/
+    public void displayImage(Image image)
+    {
+        // Resizes the image so that it fits the top left field
+        p_image = image.getScaledInstance(p_fieldSize.width,
+                                          p_fieldSize.height,
+                                          Image.SCALE_DEFAULT);
+
+        // p_image = centerDigit(p_image);
+        // Set to true to display an image
+        p_displayImage = true;
+        repaint();
+    }
+
+    /**
      * Tries to put the digit at the center of the image.
      * @param image The image to process
+     * @return The centered image
      **/
     private Image centerDigit(Image image)
     {

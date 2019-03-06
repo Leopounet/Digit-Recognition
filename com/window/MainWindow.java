@@ -123,7 +123,7 @@ public class MainWindow extends JFrame
         // Add the window to the list of listener of buttons of the top right field
         p_contentPane.getTRField().getUploadButton().addActionListener(new UploadButtonActionListener());
         p_contentPane.getTRField().getSubmitButton().addActionListener(new SubmitButtonActionListener());
-        // p_contentPane.getTRField().getSubmitButton().addActionListener(new SubmitButtonListener());
+        p_contentPane.getTRField().getRandomImageButton().addActionListener(new RandomImageButtonActionListener());
 
         // Sets the content pane
         this.setContentPane(p_contentPane);
@@ -141,7 +141,12 @@ public class MainWindow extends JFrame
           **/
          public void actionPerformed(ActionEvent e)
          {
-             p_uploadedImage = UploadButtonListener.processImage(MainWindow.this, p_contentPane);
+             File tmp = UploadButtonListener.chooseFile(MainWindow.this, p_contentPane);
+             if(tmp != null)
+             {
+                 p_uploadedImage = UploadButtonListener.getImage(MainWindow.this, p_contentPane, tmp);
+                 UploadButtonListener.displayImage(MainWindow.this, p_contentPane, p_uploadedImage);
+             }
          }
      }
 
@@ -157,6 +162,22 @@ public class MainWindow extends JFrame
          public void actionPerformed(ActionEvent e)
          {
              SubmitButtonListener.processProbabilities(p_uploadedImage, MainWindow.this, p_contentPane);
+         }
+     }
+
+     /**
+      * Action listener of the random image button.
+      **/
+     public class RandomImageButtonActionListener implements ActionListener
+     {
+         /**
+          * Modifies the window when the upload button is clicked.
+          * @param e The event information
+          **/
+         public void actionPerformed(ActionEvent e)
+         {
+             p_uploadedImage = RandomImageButtonListener.getRandomImage(MainWindow.this, p_contentPane);
+             UploadButtonListener.displayImage(MainWindow.this, p_contentPane, p_uploadedImage);
          }
      }
 

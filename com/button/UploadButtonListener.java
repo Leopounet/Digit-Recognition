@@ -17,9 +17,12 @@ import com.window.*;
 public class UploadButtonListener extends ButtonListener
 {
     /**
-     * Processes the image and draws it on the top left field.
+     * Allows the user to choose a file.
+     * @param window The main window to use
+     * @param contentPane The content pane to consider
+     * @return The selected File, null if no file selected
      **/
-    public static Image processImage(MainWindow window, ContentPane contentPane)
+    public static File chooseFile(MainWindow window, ContentPane contentPane)
     {
         // Sets the window to use
         p_window = window;
@@ -46,23 +49,58 @@ public class UploadButtonListener extends ButtonListener
                 return null;
             }
 
-            // Displays the image
-            Image p_uploadedImage = p_contentPane.getTLField().displayImage(file.getAbsolutePath());
-
-            if(p_uploadedImage == null)
-            {
-                printMessage("Error : Image could not be loaded!", Color.RED, 0, true);
-                return null;
-            }
-
-            printMessage("Success : Image successfully loaded!", Color.GREEN, 0, true);
-            printMessage("Success : Press submit to find out which digit is maybe drawn...", Color.BLUE, 1, false);
-            return p_uploadedImage;
+            return file;
         }
         else
         {
             printMessage("Error : File is unreachable or access has been denied or no file has been chosen!", Color.RED, 0, true);
             return null;
         }
+    }
+
+    /**
+     * Returns the image selected by the user.
+     * @param window The main window to use
+     * @param contentPane The content pane to consider
+     * @param file The file to load
+     * @return The selected image, null if the file is not an image
+     **/
+    public static Image getImage(MainWindow window, ContentPane contentPane, File file)
+    {
+        // Sets the window to use
+        p_window = window;
+
+        // Sets the content pane to use
+        p_contentPane = contentPane;
+
+        // Displays the image
+        Image p_uploadedImage = p_contentPane.getTLField().getImage(file.getAbsolutePath());
+
+        if(p_uploadedImage == null)
+        {
+            printMessage("Error : Image could not be loaded!", Color.RED, 0, true);
+            return null;
+        }
+
+        printMessage("Success : Image successfully loaded!", Color.GREEN, 0, true);
+        printMessage("Success : Press submit to find out which digit is maybe drawn...", Color.BLUE, 1, false);
+        return p_uploadedImage;
+    }
+
+    /**
+     * Displayes the current image.
+     * @param window The main window to use
+     * @param contentPane The content pane to consider
+     * @param image The image to display
+     **/
+    public static void displayImage(MainWindow window, ContentPane contentPane, Image image)
+    {
+        // Sets the window to use
+        p_window = window;
+
+        // Sets the content pane to use
+        p_contentPane = contentPane;
+
+        p_contentPane.getTLField().displayImage(image);
     }
 }
