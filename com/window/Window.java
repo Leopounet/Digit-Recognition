@@ -85,6 +85,9 @@ public class Window extends JFrame
 
         // Creates the different fields
         createFields();
+
+        // Verifies that everything has correctly been initialized
+        testInit();
     }
 
     /**
@@ -166,6 +169,56 @@ public class Window extends JFrame
      }
 
      /**
+      * Verifies that everything has correctly been initialized.
+      **/
+     private void testInit()
+     {
+         if(p_windowSize == null)
+         {
+             p_bField.printMessage("Error : Window could not be initialized (no size given)!", Color.RED);
+             return;
+         }
+
+         if(p_contentPane == null)
+         {
+             p_bField.printMessage("Error : Content pane could not be initialized!", Color.RED);
+             return;
+         }
+
+         if(p_dataSet == null)
+         {
+             p_bField.printMessage("Error : Data set has not been loaded, is it in the correct directory?", Color.RED);
+             return;
+         }
+
+         if(p_tlField == null)
+         {
+             p_bField.printMessage("Error : Top left field could not be loaded!", Color.RED);
+             return;
+         }
+
+         if(p_trField == null)
+         {
+             p_bField.printMessage("Error : Top right field could not be loaded!", Color.RED);
+             return;
+         }
+
+         if(p_mField == null)
+         {
+             p_bField.printMessage("Error : Middle field could not be loaded!", Color.RED);
+             return;
+         }
+
+         if(p_bField == null)
+         {
+             p_bField.printMessage("Error : Bottom field could not be loaded!", Color.RED);
+             return;
+         }
+
+         p_bField.printMessage("Success : Everything has correctly been loaded!", Color.GREEN);
+     }
+
+     /**
       * Action listener of the upload button.
       **/
      public class UploadButtonListener implements ActionListener
@@ -210,9 +263,27 @@ public class Window extends JFrame
              // Get the selected file
              File file = p_fc.getSelectedFile();
 
+             if(file == null)
+             {
+                 p_bField.printMessage("Error : No file chosen!", Color.RED);
+                 return;
+             }
+
              // Displays the image
              p_uploadedImage = p_tlField.displayImage(file.getAbsolutePath());
+
+             if(p_uploadedImage == null)
+             {
+                 p_bField.printMessage("Error : Image could not be loaded!", Color.RED);
+                 return;
+             }
          }
+         else
+         {
+             p_bField.printMessage("Error : File is unreachable or access has been denied or no file has been chosen!", Color.RED);
+             return;
+         }
+         p_bField.printMessage("Success : Image successfully loaded!", Color.GREEN);
      }
 
      /**
@@ -228,8 +299,20 @@ public class Window extends JFrame
                                                                  p_dataSet.getNbPixelColumns(),
                                                                  Image.SCALE_DEFAULT);
 
-             // Draw the diagram
-             p_mField.drawDiagram(p_dataSet.computeProbabilities(p_uploadedImage));
+             if(p_uploadedImage != null)
+             {
+                 // Draw the diagram
+                 p_mField.drawDiagram(p_dataSet.computeProbabilities(p_uploadedImage));
+                 p_bField.printMessage("Success : Diagram has been computed!", Color.GREEN);
+             }
+             else
+             {
+                 p_bField.printMessage("Error : Image couldn't be resize!", Color.RED);
+             }
+         }
+         else
+         {
+             p_bField.printMessage("Error : No image loaded!", Color.RED);
          }
      }
 
