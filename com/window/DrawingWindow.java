@@ -119,7 +119,9 @@ public class DrawingWindow extends JFrame
          **/
         public void actionPerformed(ActionEvent e)
         {
-
+            p_contentPane.getDField().setRadius(1);
+            p_contentPane.getOField().getIncreaseSizeButton().setText(String.format("Increase Size (%d)", p_contentPane.getDField().getRadius()));
+            p_contentPane.getOField().getDecreaseSizeButton().setText(String.format("Decrease Size (%d)", p_contentPane.getDField().getRadius()));
         }
     }
 
@@ -134,7 +136,9 @@ public class DrawingWindow extends JFrame
          **/
         public void actionPerformed(ActionEvent e)
         {
-
+            p_contentPane.getDField().setRadius(-1);
+            p_contentPane.getOField().getIncreaseSizeButton().setText(String.format("Decrease Size (%d)", p_contentPane.getDField().getRadius()));
+            p_contentPane.getOField().getDecreaseSizeButton().setText(String.format("Decrease Size (%d)", p_contentPane.getDField().getRadius()));
         }
     }
 

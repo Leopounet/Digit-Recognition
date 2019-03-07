@@ -275,5 +275,7 @@ public class MainWindow extends JFrame
 
         // Display the image
         UploadButtonListener.displayImage(MainWindow.this, p_contentPane, p_uploadedImage);
+        ButtonListener.printMessage(p_contentPane, "Success : Image successfully loaded!", Color.GREEN, 0, true);
+        ButtonListener.printMessage(p_contentPane, "Success : Press submit to find out which digit is maybe drawn...", Color.BLUE, 1, false);
     }
 }

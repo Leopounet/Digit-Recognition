@@ -20,6 +20,10 @@ public class DrawingField extends Field
     // The radius of the pencil
     private int p_radius = 30;
 
+    // The maximum and minimum sizes of the radius
+    private int p_minRadius = 10;
+    private int p_maxRadius = 50;
+
     /**
      * Creates a new DrawingField.
      * @param width The width of the field
@@ -175,6 +179,27 @@ public class DrawingField extends Field
     public BufferedImage getImage()
     {
         return p_bfImage;
+    }
+
+    /**
+     * Modifies the size of the pencil.
+     * @param delta The shift to apply
+     **/
+    public void setRadius(int delta)
+    {
+        if(p_radius + delta > p_minRadius && p_radius + delta < p_maxRadius)
+        {
+            p_radius += delta;
+        }
+    }
+
+    /**
+     * Returns the current radius.
+     * @return p_radius
+     **/
+    public int getRadius()
+    {
+        return p_radius;
     }
 
     /**

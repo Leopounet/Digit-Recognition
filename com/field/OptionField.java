@@ -56,8 +56,8 @@ public class OptionField extends Field
     {
         // Creates the buttons
         p_finishButton = new JButton("Finish");
-        p_increaseSizeButton = new JButton("Increase Size");
-        p_decreaseSizeButton = new JButton("Decrease Size");
+        p_increaseSizeButton = new JButton("Increase Size (30)");
+        p_decreaseSizeButton = new JButton("Decrease Size (30)");
         p_switchColorButton = new JButton("White/Black");
     }
 
