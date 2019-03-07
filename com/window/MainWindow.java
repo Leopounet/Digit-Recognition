@@ -128,7 +128,6 @@ public class MainWindow extends BasicWindow
              if(tmp != null)
              {
                  p_uploadedImage = UploadButtonListener.getImage(MainWindow.this, p_contentPane, tmp);
-                 p_uploadedImage = ImageProcessing.convertRGBtoGray(p_uploadedImage);
                  UploadButtonListener.displayImage(MainWindow.this, p_contentPane, p_uploadedImage);
              }
          }

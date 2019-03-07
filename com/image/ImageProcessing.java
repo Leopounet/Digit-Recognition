@@ -171,6 +171,9 @@ public class ImageProcessing
         int shiftX = width / 2 - middle[0];
         int shiftY = height / 2 - middle[1];
 
+        // The main color of the image
+        int mainColor = getMainColor(oldImage);
+
         // For every pixels in the old image
         for(int y = 0; y < height; y++)
         {
@@ -187,7 +190,7 @@ public class ImageProcessing
                 // Otherwise set the pixel black
                 else
                 {
-                    newImage.setRGB(x, y, 0xFF000000);
+                    newImage.setRGB(x, y, mainColor);
                 }
             }
         }
@@ -412,8 +415,4 @@ public class ImageProcessing
         }
         return y;
     }
-
-    /**
-     *
-     **/
 }

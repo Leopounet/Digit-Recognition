@@ -11,6 +11,7 @@ import com.field.*;
 import com.pane.*;
 import com.window.*;
 import com.dataset.*;
+import com.image.*;
 
 /**
  * Called when the submit button is pressed.
@@ -33,6 +34,9 @@ public class SubmitButtonListener extends ButtonListener
         // If there is an image
         if(uploadedImage != null)
         {
+            // Changes the image to a gray image
+            uploadedImage = ImageProcessing.convertRGBtoGray(uploadedImage);
+
             // Rescales the image to 28 * 28
             uploadedImage = uploadedImage.getScaledInstance(p_dataSet.getNbPixelRows(),
                                                                 p_dataSet.getNbPixelColumns(),
