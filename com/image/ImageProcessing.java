@@ -285,6 +285,135 @@ public class ImageProcessing
     }
 
     /**
+     * Converts a RGB image to a gray scaled image.
+     * @param image The image to convert
+     **/
+    public static BufferedImage convertRGBtoGray(Image image)
+    {
+        // Converts the Image to a Buffered image
+        BufferedImage bfImage = convertImageToBufferedImage(image);
+
+        // Gets the main color of the image
+        int mainColor = getMainColor(bfImage);
+
+        // For every pixels of the image
+        for(int x = 0; x < bfImage.getWidth(null); x++)
+        {
+            for(int y = 0; y < bfImage.getHeight(null); y++)
+            {
+                // get the pixel
+                int pixel = bfImage.getRGB(x, y);
+
+                // If the pixel is not the main color, compute its gray value
+                if(pixel != mainColor)
+                {
+                    int gray = getGray(pixel);
+                    bfImage.setRGB(x, y, gray);
+                }
+
+                // If the pixel is the main color, set it to black
+                else
+                {
+                    bfImage.setRGB(x, y, 0xFF000000);
+                }
+            }
+        }
+        return bfImage;
+    }
+
+    /**
+     * Returns the main color of an image. The idea is that the main color is
+     * probably going to at least fill a full column, so the algorithm looks for
+     * a column which has every pixel of the same color. Though because of the
+     * resize method, there may be fully black columns that do not represent the
+     * main color of the image, therefore, black is returned as a main color if
+     * no other main color has been found.
+     * @param image The image to find the main color of
+     * @return An integer representing the main color
+     **/
+    private static int getMainColor(BufferedImage image)
+    {
+        // For every pixel of the image
+        for(int x = 0; x < image.getWidth(null); x++)
+        {
+            // Stores the main color
+            int line = 0xFF000000;
+            for(int y = 0; y < image.getHeight(null); y++)
+            {
+                // Get the current pixel
+                int pixel = image.getRGB(x, y);
+
+                // If the current main color is black
+                if(line == 0xFF000000)
+                {
+                    // Change the main color to the current pixel
+                    line = pixel;
+                }
+
+                // If the current main color is not black
+                else
+                {
+                    // If the current main color is not the same color of the
+                    // current pixel, then the column is not fully of the same
+                    // color, get to the next color and set the main color as black
+                    if(line != pixel)
+                    {
+                        line = 0xFF000000;
+                        break;
+                    }
+                }
+            }
+
+            // If the main color is not black, then return it
+            if(line != 0xFF000000)
+            {
+                return line;
+            }
+        }
+
+        // Default: Return black
+        return 0xFF000000;
+    }
+
+    /**
+     * Converts a RGB color to a gray color. To do that it simply computes
+     * the highest value of R G B and sets it as the shade of gray. This is not
+     * an actual conversion to a gray scale, the idea is simply to change a
+     * colored digit to a gray digit, therefore 255 in any component means it
+     * should be represented as white.
+     * @param pixel The pixel to process
+     * @return An integer representing the nex pixel
+     **/
+    private static int getGray(int pixel)
+    {
+        // Extract r, g, b components of the hex value
+        int r = (pixel >> 16) - 0xFFFFFF00;
+        int g = (pixel >> 8) - (0xFFFF0000 | (r << 8));
+        int b = (pixel) - (0xFF000000 | (r << 16) | (g << 8));
+
+        // Get the max of the three components
+        int gray = maxVal(maxVal(r, g), b);
+
+        // Return a fully gray pixel
+        return 0xFF000000 | (gray << 16) | (gray << 8) | gray;
+    }
+
+    /**
+     * Returns the maximum of two values.
+     * @param x Teh first value
+     * @param y The second value
+     * @return The greatest value of them all
+     **/
+    private static int maxVal(int x, int y)
+    {
+        if(x > y)
+        {
+            return x;
+        }
+        return y;
+    }
+
+    /**
      *
      **/
 }

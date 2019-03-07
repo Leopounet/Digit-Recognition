@@ -58,6 +58,9 @@ public class LoadingWindow extends BasicWindow
         // Creates the LoadingField and adds it to the content pane of the window
         p_loadingField = new LoadingField(p_windowSize);
         this.getContentPane().add(p_loadingField);
+
+        // Makes the window visible
+        this.setVisible(true);
     }
 
     /**

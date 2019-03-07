@@ -64,6 +64,9 @@ public class DrawingWindow extends BasicWindow
 
         // Adds the content pane the window
         this.setContentPane(p_contentPane);
+
+        // Makes the window visible
+        this.setVisible(true);
     }
 
     /**

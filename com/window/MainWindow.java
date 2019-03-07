@@ -53,6 +53,7 @@ public class MainWindow extends BasicWindow
     public MainWindow(int width, int height)
     {
         super(width, height);
+        initWindow();
         init();
     }
 
@@ -64,6 +65,7 @@ public class MainWindow extends BasicWindow
     public MainWindow(Dimension size)
     {
         super(size);
+        initWindow();
         init();
     }
 
@@ -83,11 +85,11 @@ public class MainWindow extends BasicWindow
         // Create a new file browser
         p_fc = new JFileChooser();
 
-        // Initializes the window
-        initWindow();
-
         // Creates the different fields
         createFields();
+
+        // Makes the window visible
+        this.setVisible(true);
     }
 
     /**
@@ -126,6 +128,7 @@ public class MainWindow extends BasicWindow
              if(tmp != null)
              {
                  p_uploadedImage = UploadButtonListener.getImage(MainWindow.this, p_contentPane, tmp);
+                 p_uploadedImage = ImageProcessing.convertRGBtoGray(p_uploadedImage);
                  UploadButtonListener.displayImage(MainWindow.this, p_contentPane, p_uploadedImage);
              }
          }

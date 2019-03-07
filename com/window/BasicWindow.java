@@ -42,9 +42,6 @@ public class BasicWindow extends JFrame
 
         // Makes the window fullscreen by default
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-        // Makes the window visible
-        this.setVisible(true);
     }
 
     /**
