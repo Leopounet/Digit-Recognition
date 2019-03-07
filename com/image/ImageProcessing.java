@@ -45,15 +45,15 @@ public class ImageProcessing
      * @param x The x coordinate of the center of the circle to draw
      * @param y The y coordinate of the center of the circle to draw
      * @param radius The raidus of the circle to draw
-     * @param erase True if the user is using black color
+     * @param color The color to use
      **/
-    public static void setCircle(BufferedImage image, Dimension fieldSize, int x, int y, int radius, boolean erase)
+    public static void setCircle(BufferedImage image, Dimension fieldSize, int x, int y, int radius, int color)
     {
         // Creates a new array of position
         ColoredPoint p_points[] = new ColoredPoint[10000];
 
         // Fills the array with every pixel in the circle around the mouse
-        getCircle(image, fieldSize, p_points, x, y, radius);
+        getCircle(image, fieldSize, p_points, x, y, radius, color);
 
         // For every pixel recorded
         for(ColoredPoint p : p_points)
@@ -63,17 +63,7 @@ public class ImageProcessing
             {
                 break;
             }
-
-            if(erase)
-            {
-                // Set the corresponding pixel of the image to black
-                image.setRGB(p.x, p.y, 0xFF000000);
-            }
-            else
-            {
-                // Set the corresponding pixel of the image to white
-                image.setRGB(p.x, p.y, p.c);
-            }
+            image.setRGB(p.x, p.y, p.c);
         }
     }
 
@@ -86,8 +76,9 @@ public class ImageProcessing
      * @param centerX The center X of the circle to draw
      * @param centerY The center Y of the circle to draw
      * @param radius The raidus of the circle to draw
+     * @param color The color to use
      **/
-    public static void getCircle(BufferedImage image, Dimension fieldSize, ColoredPoint pos[], int centerX, int centerY, int radius)
+    public static void getCircle(BufferedImage image, Dimension fieldSize, ColoredPoint pos[], int centerX, int centerY, int radius, int color)
     {
         int index = 0;
         // For every pixel within the square from (x - r, y - r) (x + r, y + r)
@@ -106,19 +97,9 @@ public class ImageProcessing
                 int d = distance(x, y, centerX, centerY);
                 if(d < radius)
                 {
-                    // Lighter shades of white the further away from the center
+                    // Sets the new color of the pixel
                     int pixel = image.getRGB(x, y);
-                    int factor = (int)(15 * Math.pow((double)(d) / (double)(radius), (double)(1.0 / 4.0)));
-                    int b = 0x00FF0000 - 0x00110000 * factor;
-                    int g = 0x0000FF00 - 0x00001100 * factor;
-                    int r = 0x000000FF - 0x00000011 * factor;
-                    int shift = (0x00000000) | (b) | (g) | r;
-                    pixel += shift;
-                    if(pixel >= 0xFFFFFFFF)
-                    {
-                        pixel = -1;
-                    }
-                    pos[index] = new ColoredPoint(x, y, pixel);
+                    pos[index] = new ColoredPoint(x, y, color);
                     index++;
                 }
             }
@@ -325,57 +306,67 @@ public class ImageProcessing
     }
 
     /**
-     * Returns the main color of an image. The idea is that the main color is
-     * probably going to at least fill a full column, so the algorithm looks for
-     * a column which has every pixel of the same color. Though because of the
-     * resize method, there may be fully black columns that do not represent the
-     * main color of the image, therefore, black is returned as a main color if
-     * no other main color has been found.
+     * Returns the main color of an image.
      * @param image The image to find the main color of
      * @return An integer representing the main color
      **/
     private static int getMainColor(BufferedImage image)
     {
+        // Counts how many time each colors appear
+        ColorOccurence co[] = new ColorOccurence[10000];
+
         // For every pixel of the image
-        for(int x = 0; x < image.getWidth(null); x++)
+        for(int x = 0; x < image.getWidth(null) / 2; x++)
         {
-            // Stores the main color
-            int line = 0xFF000000;
-            for(int y = 0; y < image.getHeight(null); y++)
+            for(int y = 0; y < image.getHeight(null) / 2; y++)
             {
-                // Get the current pixel
+                // Get the pixel
                 int pixel = image.getRGB(x, y);
 
-                // If the current main color is black
-                if(line == 0xFF000000)
+                // Parse every element initialized of the array
+                for(int i = 0; i < 10000; i++)
                 {
-                    // Change the main color to the current pixel
-                    line = pixel;
-                }
-
-                // If the current main color is not black
-                else
-                {
-                    // If the current main color is not the same color of the
-                    // current pixel, then the column is not fully of the same
-                    // color, get to the next color and set the main color as black
-                    if(line != pixel)
+                    // If the element is null, a new color has been found
+                    if(co[i] == null)
                     {
-                        line = 0xFF000000;
+                        // Creates a new color and sets its occurence to 1
+                        co[i] = new ColorOccurence(pixel, 1);
+                        break;
+                    }
+
+                    // If the color is already is already in the array, add one
+                    if(co[i].color == pixel){
+                        co[i].occurence += 1;
                         break;
                     }
                 }
             }
-
-            // If the main color is not black, then return it
-            if(line != 0xFF000000)
-            {
-                return line;
-            }
         }
 
-        // Default: Return black
-        return 0xFF000000;
+        // Maximum number of occurence
+        int max = 0;
+
+        // The color that appeared the most so far
+        int maxVal = 0;
+
+        // For every color
+        for(ColorOccurence c : co)
+        {
+            // If null, the whole array has been parsed
+            if(c == null)
+            {
+                break;
+            }
+
+            // If this color occurs more times than the previous most appearing
+            // color, set it as the new most appearing color
+            if(c.occurence > max)
+            {
+                max = c.occurence;
+                maxVal = c.color;
+            }
+        }
+        return maxVal;
     }
 
     /**

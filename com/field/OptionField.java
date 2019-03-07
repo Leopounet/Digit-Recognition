@@ -16,13 +16,12 @@ public class OptionField extends Field
     private JButton p_finishButton = null;
     private JButton p_increaseSizeButton = null;
     private JButton p_decreaseSizeButton = null;
-    private JButton p_switchColorButton = null;
 
     // Number of buttons on a row
     private int p_nbButtonRow = 1;
 
     // Number of buttons on a column
-    private int p_nbButtonColumn = 4;
+    private int p_nbButtonColumn = 3;
 
     /**
      * Creates a new option field.
@@ -58,7 +57,6 @@ public class OptionField extends Field
         p_finishButton = new JButton("Finish");
         p_increaseSizeButton = new JButton("Increase Size (30)");
         p_decreaseSizeButton = new JButton("Decrease Size (30)");
-        p_switchColorButton = new JButton("Color (white)");
     }
 
     /**
@@ -73,7 +71,6 @@ public class OptionField extends Field
         this.add(p_finishButton);
         this.add(p_increaseSizeButton);
         this.add(p_decreaseSizeButton);
-        this.add(p_switchColorButton);
     }
 
     /**
@@ -101,14 +98,5 @@ public class OptionField extends Field
     public JButton getDecreaseSizeButton()
     {
         return p_decreaseSizeButton;
-    }
-
-    /**
-     * Returns the draw button.
-     * @return An JButton instance.
-     **/
-    public JButton getSwitchColorButton()
-    {
-        return p_switchColorButton;
     }
 }

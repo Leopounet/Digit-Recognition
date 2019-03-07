@@ -35,7 +35,7 @@ public class DrawButtonListener extends ButtonListener
         TopLeftField tlf = p_contentPane.getTLField();
 
         // Creates a new drawing window with the same dimension as the top left field
-        DrawingWindow dw = new DrawingWindow(tlf.getFieldSize().width, (int)((double)(tlf.getFieldSize().height) * 1.2));
+        DrawingWindow dw = new DrawingWindow(tlf.getFieldSize().width, (int)((double)(tlf.getFieldSize().height) * 1.4));
 
         // Sends the main window to the drawing window
         dw.setMainWindow(p_window);

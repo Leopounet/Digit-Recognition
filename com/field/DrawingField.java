@@ -26,8 +26,8 @@ public class DrawingField extends Field
     private int p_minRadius = 10;
     private int p_maxRadius = 50;
 
-    // If true, color set to black
-    private boolean p_erase = false;
+    //
+    private int p_color = 0xFFFFFFFF;
 
     /**
      * Creates a new DrawingField.
@@ -55,8 +55,8 @@ public class DrawingField extends Field
      **/
     private void init()
     {
-        // Sets the size of the field
-        this.setPreferredSize(p_fieldSize);
+        // Inits the field
+        initField(Color.GRAY);
 
         // Adss mouse listeners to the field
         this.addMouseListener(new MouseHandler());
@@ -97,7 +97,7 @@ public class DrawingField extends Field
      **/
     private void setCircle(int x, int y)
     {
-        ImageProcessing.setCircle(p_bfImage, p_fieldSize, x, y, p_radius, p_erase);
+        ImageProcessing.setCircle(p_bfImage, p_fieldSize, x, y, p_radius, p_color);
         repaint();
     }
 
@@ -132,20 +132,11 @@ public class DrawingField extends Field
     }
 
     /**
-     * Toggles the erase mode.
+     * Sets the color of the pencil.
      **/
-    public void toggleErase()
+    public void setColor(int c)
     {
-        p_erase = !p_erase;
-    }
-
-    /**
-     * Returns true if in erase mode, false otherwise
-     * @return p_erase
-     **/
-    public boolean getErase()
-    {
-        return p_erase;
+        p_color = c;
     }
 
     /**

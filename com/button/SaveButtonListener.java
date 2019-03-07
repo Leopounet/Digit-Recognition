@@ -33,6 +33,12 @@ import com.image.*;
       **/
      public static void saveImage(Image uploadedImage, MainWindow window, MainContentPane contentPane)
      {
+         // If tehre are no image
+         if(uploadedImage == null)
+         {
+             return;
+         }
+         
          // Sets the window to use
          p_window = window;
 

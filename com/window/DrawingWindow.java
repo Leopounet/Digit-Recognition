@@ -56,11 +56,13 @@ public class DrawingWindow extends BasicWindow
         // Creates the content pane
         p_contentPane = new DrawingContentPane(p_windowSize);
 
+        // Sets the drawing field to use in the color field
+        p_contentPane.getCField().setDrawingField(p_contentPane.getDField());
+
         // Adds the buttons listeners to the window
         p_contentPane.getOField().getFinishButton().addActionListener(new FinishButtonActionListener());
         p_contentPane.getOField().getIncreaseSizeButton().addActionListener(new IncreaseSizeButtonActionListener());
         p_contentPane.getOField().getDecreaseSizeButton().addActionListener(new DecreaseSizeButtonActionListener());
-        p_contentPane.getOField().getSwitchColorButton().addActionListener(new SwitchColorButtonActionListener());
 
         // Adds the content pane the window
         this.setContentPane(p_contentPane);
@@ -125,29 +127,6 @@ public class DrawingWindow extends BasicWindow
             p_contentPane.getDField().setRadius(-1);
             p_contentPane.getOField().getIncreaseSizeButton().setText(String.format("Decrease Size (%d)", p_contentPane.getDField().getRadius()));
             p_contentPane.getOField().getDecreaseSizeButton().setText(String.format("Decrease Size (%d)", p_contentPane.getDField().getRadius()));
-        }
-    }
-
-    /**
-     * Action listener of the switch color button.
-     **/
-    public class SwitchColorButtonActionListener implements ActionListener
-    {
-        /**
-         * Modifies the window when the upload button is clicked.
-         * @param e The event information
-         **/
-        public void actionPerformed(ActionEvent e)
-        {
-            p_contentPane.getDField().toggleErase();
-            if(p_contentPane.getDField().getErase())
-            {
-                p_contentPane.getOField().getSwitchColorButton().setText("Color (black)");
-            }
-            else
-            {
-                p_contentPane.getOField().getSwitchColorButton().setText("Color (white)");
-            }
         }
     }
 
