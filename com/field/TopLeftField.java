@@ -12,7 +12,6 @@ import java.io.*;
 import java.awt.event.*;
 import java.util.Arrays;
 
-import com.image.*;
 
 /**
  * Represents the top left field of this window.
@@ -121,7 +120,7 @@ public class TopLeftField extends Field
      * @param image The image to process
      * @return The centered image
      **/
-    private Image centerDigit(Image image)
+    public Image centerDigit(Image image)
     {
         // Get the width and height of the image
         int width = image.getWidth(null);

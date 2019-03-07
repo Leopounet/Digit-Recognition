@@ -8,7 +8,7 @@ import java.awt.event.*;
 
 import com.dataset.*;
 import com.field.*;
-
+import com.pane.*;
 import com.window.*;
 import com.dataset.*;
 
@@ -20,7 +20,7 @@ public class SubmitButtonListener extends ButtonListener
     /**
      * Computes and displays the probability of each digits.
      **/
-    public static void processProbabilities(Image uploadedImage, MainWindow window, ContentPane contentPane)
+    public static void processProbabilities(Image uploadedImage, MainWindow window, MainContentPane contentPane)
     {
         // Sets the content pane to use
         p_contentPane = contentPane;

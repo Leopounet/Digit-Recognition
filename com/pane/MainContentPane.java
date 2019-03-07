@@ -1,4 +1,4 @@
-package com.field;
+package com.pane;
 
 import java.awt.*;
 import javax.swing.*;
@@ -6,10 +6,12 @@ import javax.imageio.*;
 import java.io.*;
 import java.awt.event.*;
 
+import com.field.*;
+
 /**
  * Content pane of the main window.
  **/
-public class ContentPane extends JPanel
+public class MainContentPane extends ContentPane
 {
     // Fields on the window
     private TopLeftField p_tlField = null;
@@ -23,10 +25,9 @@ public class ContentPane extends JPanel
     private Dimension p_mFieldSize = null;
     private Dimension p_bFieldSize = null;
 
-    public ContentPane(Dimension size)
+    public MainContentPane(Dimension size)
     {
-        super(new GridBagLayout());
-        this.setPreferredSize(size);
+        super(size);
 
         // Sets the sizes of the different fields
         // These sizes have been choosen arbitrarly
@@ -47,27 +48,6 @@ public class ContentPane extends JPanel
         addField(p_mField, 0, 1, 2, 1);
         addField(p_bField, 0, 2, 2, 1);
     }
-
-    /**
-     * Adds a field to the content pane.
-     * @param zone The zone to add
-     * @param x The position of the field on the current row (in "field" unit)
-     * @param y The position of the field on the current column (in "field" unit)
-     * @param width The width of the field (in "field" unit)
-     * @param height The height of the field (in "field" unit)
-     **/
-     private void addField(JPanel zone, int x, int y, int width, int height)
-     {
-         // Sets the gridbagconstraints so that the field is placed correctly
-         GridBagConstraints gbc = new GridBagConstraints();
-         gbc.gridx = x;
-         gbc.gridy = y;
-         gbc.gridheight = height;
-         gbc.gridwidth = width;
-
-         // Adds the field at the right position
-         this.add(zone, gbc);
-     }
 
      /**
       * Returns the top left field.

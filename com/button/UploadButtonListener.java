@@ -8,7 +8,7 @@ import java.awt.event.*;
 
 import com.dataset.*;
 import com.field.*;
-
+import com.pane.*;
 import com.window.*;
 
 /**
@@ -22,7 +22,7 @@ public class UploadButtonListener extends ButtonListener
      * @param contentPane The content pane to consider
      * @return The selected File, null if no file selected
      **/
-    public static File chooseFile(MainWindow window, ContentPane contentPane)
+    public static File chooseFile(MainWindow window, MainContentPane contentPane)
     {
         // Sets the window to use
         p_window = window;
@@ -65,7 +65,7 @@ public class UploadButtonListener extends ButtonListener
      * @param file The file to load
      * @return The selected image, null if the file is not an image
      **/
-    public static Image getImage(MainWindow window, ContentPane contentPane, File file)
+    public static Image getImage(MainWindow window, MainContentPane contentPane, File file)
     {
         // Sets the window to use
         p_window = window;
@@ -93,7 +93,7 @@ public class UploadButtonListener extends ButtonListener
      * @param contentPane The content pane to consider
      * @param image The image to display
      **/
-    public static void displayImage(MainWindow window, ContentPane contentPane, Image image)
+    public static void displayImage(MainWindow window, MainContentPane contentPane, Image image)
     {
         // Sets the window to use
         p_window = window;

@@ -12,8 +12,8 @@ set(DATASET "com/dataset/")
 set(FIELD "com/field/")
 set(LABELDISTANCE "com/labeldistance/")
 set(WINDOW "com/window/")
-set(IMAGE "com/image/")
 set(BUTTON "com/button/")
+set(PANE "com/pane/")
 set(MESSAGE "com/message/")
 
 # Custom command to create directories when cmake .. is used
@@ -23,9 +23,9 @@ COMMAND mkdir ${DATASET}
 COMMAND mkdir ${FIELD}
 COMMAND mkdir ${LABELDISTANCE}
 COMMAND mkdir ${WINDOW}
-COMMAND mkdir ${IMAGE}
 COMMAND mkdir ${BUTTON}
-COMMAND mkdir ${MESSAGE})
+COMMAND mkdir ${MESSAGE}
+COMMAND mkdir ${PANE})
 
 # Make the project (m for make)
 add_custom_target(m
@@ -33,17 +33,17 @@ COMMAND javac ../${DATASET}*.java
 ../${FIELD}*.java
 ../${LABELDISTANCE}*.java
 ../${WINDOW}*.java
-../${IMAGE}*.java
 ../${BUTTON}*.java
 ../${MESSAGE}*.java
+../${PANE}*.java
 ../${MAIN}*.java
 COMMAND mv ../${DATASET}*.class ${DATASET}
 COMMAND mv ../${FIELD}*.class ${FIELD}
 COMMAND mv ../${LABELDISTANCE}*.class ${LABELDISTANCE}
 COMMAND mv ../${WINDOW}*.class ${WINDOW}
-COMMAND mv ../${IMAGE}*.class ${IMAGE}
 COMMAND mv ../${BUTTON}*.class ${BUTTON}
 COMMAND mv ../${MESSAGE}*.class ${MESSAGE}
+COMMAND mv ../${PANE}*.class ${PANE}
 COMMAND mv ../${MAIN}.class .)
 
 # Run the project (r for run)
@@ -55,7 +55,7 @@ COMMAND rm ${DATASET}*.class
 COMMAND rm ${FIELD}*.class
 COMMAND rm ${LABELDISTANCE}*.class
 COMMAND rm ${WINDOW}*.class
-COMMAND rm ${IMAGE}*.class
 COMMAND rm ${BUTTON}*.class
 COMMAND rm ${MESSAGE}*.class
+COMMAND rm ${PANE}*.class
 COMMAND rm ${MAIN}.class)

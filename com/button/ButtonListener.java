@@ -8,7 +8,7 @@ import java.awt.event.*;
 
 import com.dataset.*;
 import com.field.*;
-
+import com.pane.*;
 import com.window.*;
 
 /**
@@ -23,7 +23,7 @@ public class ButtonListener
     protected static MainWindow p_window = null;
 
     // The content pane to use (not a Container returned by getContentPane)
-    protected static ContentPane p_contentPane = null;
+    protected static MainContentPane p_contentPane = null;
 
     /**
      * Sends a message to print to the bottom field.
@@ -50,7 +50,7 @@ public class ButtonListener
      * @param line The line to print the message at (starts at 0)
      * @param reset If true, deleted every previous messages
      **/
-    public static void printMessage(ContentPane cp, String message, Color c, int line, boolean reset)
+    public static void printMessage(MainContentPane cp, String message, Color c, int line, boolean reset)
     {
         // Removes every previous messages
         if(reset)

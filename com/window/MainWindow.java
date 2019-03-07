@@ -5,10 +5,13 @@ import javax.swing.*;
 import javax.imageio.*;
 import java.io.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.util.concurrent.TimeUnit;
 
 import com.dataset.*;
 import com.field.*;
 import com.button.*;
+import com.pane.*;
 
 /**
  * The main window of this program, most of the event start here.
@@ -19,7 +22,7 @@ public class MainWindow extends JFrame
     private Dimension p_windowSize = null;
 
     // Pane of the window
-    private ContentPane p_contentPane = null;
+    private MainContentPane p_contentPane = null;
 
     // The training dataset
     private DataSet p_dataSet = null;
@@ -118,7 +121,7 @@ public class MainWindow extends JFrame
     private void createFields()
     {
         // Create and add the content pane of the JFrame
-        p_contentPane = new ContentPane(p_windowSize);
+        p_contentPane = new MainContentPane(p_windowSize);
 
         // Add the window to the list of listener of buttons of the top right field
         p_contentPane.getTRField().getUploadButton().addActionListener(new UploadButtonActionListener());
@@ -193,7 +196,7 @@ public class MainWindow extends JFrame
           **/
          public void actionPerformed(ActionEvent e)
          {
-             p_uploadedImage = DrawButtonListener.drawImage(MainWindow.this, p_contentPane);
+             DrawButtonListener.drawImage(MainWindow.this, p_contentPane);
          }
      }
 
@@ -249,5 +252,28 @@ public class MainWindow extends JFrame
     public File getCurrentDirectory()
     {
         return p_directory;
+    }
+
+    /**
+     * Sets the uploaded image.
+     * @param image The image to set
+     **/
+    public void setImage(BufferedImage image)
+    {
+        // Centers the digit and set the image
+        p_uploadedImage = p_contentPane.getTLField().centerDigit(image);
+
+        // wait 0.5 sec (to let the window appear correctly)
+        try
+        {
+            Thread.sleep(500);
+        }
+        catch(InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
+        }
+
+        // Display the image
+        UploadButtonListener.displayImage(MainWindow.this, p_contentPane, p_uploadedImage);
     }
 }

@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 
 import com.dataset.*;
 import com.field.*;
-
+import com.pane.*;
 import com.window.*;
 
 public class RandomImageButtonListener extends ButtonListener
@@ -20,7 +20,7 @@ public class RandomImageButtonListener extends ButtonListener
      * @param window The main window to use
      * @param contentPane The content pane to consider
      **/
-    public static Image getRandomImage(MainWindow window, ContentPane contentPane)
+    public static Image getRandomImage(MainWindow window, MainContentPane contentPane)
     {
         // Sets the window to use
         p_window = window;
