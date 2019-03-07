@@ -153,7 +153,15 @@ public class DrawingWindow extends JFrame
          **/
         public void actionPerformed(ActionEvent e)
         {
-
+            p_contentPane.getDField().toggleErase();
+            if(p_contentPane.getDField().getErase())
+            {
+                p_contentPane.getOField().getSwitchColorButton().setText("Color (black)");
+            }
+            else
+            {
+                p_contentPane.getOField().getSwitchColorButton().setText("Color (white)");
+            }
         }
     }
 

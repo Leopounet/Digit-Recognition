@@ -24,6 +24,9 @@ public class DrawingField extends Field
     private int p_minRadius = 10;
     private int p_maxRadius = 50;
 
+    // If true, color set to black
+    private boolean p_erase = false;
+
     /**
      * Creates a new DrawingField.
      * @param width The width of the field
@@ -166,8 +169,16 @@ public class DrawingField extends Field
                 break;
             }
 
-            // Set the corresponding pixel of the image to black
-            p_bfImage.setRGB(p.x, p.y, 0xFFFFFFFF);
+            if(p_erase)
+            {
+                // Set the corresponding pixel of the image to black
+                p_bfImage.setRGB(p.x, p.y, 0xFF000000);
+            }
+            else
+            {
+                // Set the corresponding pixel of the image to white
+                p_bfImage.setRGB(p.x, p.y, 0xFFFFFFFF);
+            }
         }
         repaint();
     }
@@ -200,6 +211,23 @@ public class DrawingField extends Field
     public int getRadius()
     {
         return p_radius;
+    }
+
+    /**
+     * Toggles the erase mode.
+     **/
+    public void toggleErase()
+    {
+        p_erase = !p_erase;
+    }
+
+    /**
+     * Returns true if in erase mode, false otherwise
+     * @return p_erase
+     **/
+    public boolean getErase()
+    {
+        return p_erase;
     }
 
     /**
