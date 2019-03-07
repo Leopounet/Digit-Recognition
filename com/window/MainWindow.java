@@ -128,6 +128,7 @@ public class MainWindow extends JFrame
         p_contentPane.getTRField().getSubmitButton().addActionListener(new SubmitButtonActionListener());
         p_contentPane.getTRField().getRandomImageButton().addActionListener(new RandomImageButtonActionListener());
         p_contentPane.getTRField().getDrawButton().addActionListener(new DrawButtonActionListener());
+        p_contentPane.getTRField().getSaveButton().addActionListener(new SaveButtonActionListener());
 
         // Sets the content pane
         this.setContentPane(p_contentPane);
@@ -197,6 +198,21 @@ public class MainWindow extends JFrame
          public void actionPerformed(ActionEvent e)
          {
              DrawButtonListener.drawImage(MainWindow.this, p_contentPane);
+         }
+     }
+
+     /**
+      * Action listener of the save button.
+      **/
+     public class SaveButtonActionListener implements ActionListener
+     {
+         /**
+          * Modifies the window when the upload button is clicked.
+          * @param e The event information
+          **/
+         public void actionPerformed(ActionEvent e)
+         {
+             SaveButtonListener.saveImage(p_uploadedImage, MainWindow.this, p_contentPane);
          }
      }
 

@@ -18,8 +18,10 @@ import com.dataset.*;
 public class SubmitButtonListener extends ButtonListener
 {
     /**
-     * Computes and displays the probability of each digits.
-     **/
+    * Processes the probabilities of the given image.
+    * @param window The main window to use
+    * @param contentPane The content pane to consider
+    **/
     public static void processProbabilities(Image uploadedImage, MainWindow window, MainContentPane contentPane)
     {
         // Sets the content pane to use
