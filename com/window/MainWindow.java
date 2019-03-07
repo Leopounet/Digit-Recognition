@@ -17,11 +17,8 @@ import com.image.*;
 /**
  * The main window of this program, most of the event start here.
  **/
-public class MainWindow extends JFrame
+public class MainWindow extends BasicWindow
 {
-    // Used to store the width and height of the window in pixels
-    private Dimension p_windowSize = null;
-
     // Pane of the window
     private MainContentPane p_contentPane = null;
 
@@ -55,8 +52,8 @@ public class MainWindow extends JFrame
      **/
     public MainWindow(int width, int height)
     {
-        super();
-        init(new Dimension(width, height));
+        super(width, height);
+        init();
     }
 
     /**
@@ -66,18 +63,18 @@ public class MainWindow extends JFrame
      **/
     public MainWindow(Dimension size)
     {
-        super();
-        init(size);
+        super(size);
+        init();
     }
 
     /**
      * Initializes the object.
      * @param size The size of the window
      **/
-    private void init(Dimension size)
+    private void init()
     {
-        // Set th size of the window
-        p_windowSize = size;
+        // Sets the title of the window
+        this.setTitle("Digit Recognition");
 
         // Creates a new data set
         p_dataSet = new DataSet(trainingImagesPath, trainingLabelsPath);
@@ -91,28 +88,6 @@ public class MainWindow extends JFrame
 
         // Creates the different fields
         createFields();
-    }
-
-    /**
-     * Sets the default parameters of the window and displays it. Also adds the
-     * file chooser.
-     **/
-    private void initWindow()
-    {
-        // Centers the window
-        this.setLocationRelativeTo(null);
-
-        // Closing the window stops the program
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Sets the size of the window
-        this.setSize(p_windowSize);
-
-        // Makes the window fullscreen by default
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-        // Makes the window visible
-        this.setVisible(true);
     }
 
     /**
@@ -216,33 +191,6 @@ public class MainWindow extends JFrame
              SaveButtonListener.saveImage(p_uploadedImage, MainWindow.this, p_contentPane);
          }
      }
-
-    /**
-     * Returns the size of the window.
-     * @return The size of the window as a Dimension object.
-     **/
-    public Dimension getWindowSize()
-    {
-        return p_windowSize;
-    }
-
-    /**
-     * Sets the size of the window.
-     * @param width Width in pixels of the created window
-     * @param height Height in pixels of the created window
-     **/
-    public void setWindowSize(int width, int height)
-    {
-        p_windowSize = new Dimension(width, height);
-    }
-
-    /**
-     * @param size The size of the window in pixels (width, height) format
-     **/
-    public void setWindowSize(Dimension size)
-    {
-        p_windowSize = size;
-    }
 
     /**
      * Returns the data set bound to the program.

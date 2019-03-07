@@ -13,11 +13,8 @@ import com.pane.*;
 /**
  * The window that appears when the user wants to draw.
  **/
-public class DrawingWindow extends JFrame
+public class DrawingWindow extends BasicWindow
 {
-    // The size of the window
-    private Dimension p_windowSize = null;
-
     // The content pane of the window
     private DrawingContentPane p_contentPane = null;
 
@@ -34,9 +31,8 @@ public class DrawingWindow extends JFrame
      **/
     public DrawingWindow(int width, int height)
     {
-        super();
-        p_windowSize = new Dimension(width, height);
-        initWindow();
+        super(width, height);
+        init();
     }
 
     /**
@@ -45,30 +41,17 @@ public class DrawingWindow extends JFrame
      **/
     public DrawingWindow(Dimension size)
     {
-        super();
-        p_windowSize = size;
-        initWindow();
+        super(size);
+        init();
     }
 
     /**
      * Initializes the window.
      **/
-    private void initWindow()
+    private void init()
     {
-        // Centers the window
-        this.setLocationRelativeTo(null);
-
-        // Closing the window stops the program
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Sets the size of the window
-        this.setSize(p_windowSize);
-
-        // Makes the window fullscreen by default
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-        // Makes the window visible
-        this.setVisible(true);
+        // Sets the title of the window
+        this.setTitle("Draw a digit to recognize!");
 
         // Creates the content pane
         p_contentPane = new DrawingContentPane(p_windowSize);

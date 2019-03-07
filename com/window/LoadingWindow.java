@@ -11,13 +11,10 @@ import com.field.*;
 /**
  * The loading window that appears while the training data is being loaded.
  **/
-public class LoadingWindow extends JFrame
+public class LoadingWindow extends BasicWindow
 {
     // The content pane of this window
     private JPanel p_contentPane = null;
-
-    // The size of this window
-    private Dimension p_windowSize = null;
 
     // The loading field to draw on
     private LoadingField p_loadingField = null;
@@ -29,8 +26,7 @@ public class LoadingWindow extends JFrame
      **/
     public LoadingWindow(int width, int height)
     {
-        super();
-        p_windowSize = new Dimension(width, height);
+        super(width, height);
         init();
     }
 
@@ -40,8 +36,7 @@ public class LoadingWindow extends JFrame
      **/
     public LoadingWindow(Dimension size)
     {
-        super();
-        p_windowSize = size;
+        super(size);
         init();
     }
 
@@ -50,17 +45,8 @@ public class LoadingWindow extends JFrame
      **/
     private void init()
     {
-        // Centers the window
-        this.setLocationRelativeTo(null);
-
-        // Sets the size of the window
-        this.setSize(p_windowSize);
-
-        // Makes the window full screen by default
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-        // Makes the window visible
-        this.setVisible(true);
+        // Sets the title of the window
+        this.setTitle("Loading, please wait...");
 
         // Creates the content pane
         p_contentPane = new JPanel();
@@ -79,6 +65,8 @@ public class LoadingWindow extends JFrame
      **/
     public void closeWindow()
     {
+        // The program no longer exits if this window is closed
+        LoadingWindow.this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }
 
