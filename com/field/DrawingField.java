@@ -108,7 +108,7 @@ public class DrawingField extends Field
      * @param centerX The center X of the circle to draw
      * @param centerY The center Y of the circle to draw
      **/
-    private void getCircle(Position pos[], int centerX, int centerY)
+    private void getCircle(Point pos[], int centerX, int centerY)
     {
         int index = 0;
         // For every pixel within the square from (x - r, y - r) (x + r, y + r)
@@ -124,9 +124,17 @@ public class DrawingField extends Field
 
                 // If the pixel  is within the circle of radius p_radius, add it
                 // to the list
-                if(distance(x, y, centerX, centerY) < p_radius)
+                int d = distance(x, y, centerX, centerY);
+                if(d < p_radius)
                 {
-                    pos[index] = new Position(x, y);
+                    // Lighter shades of white the further away from the center
+                    /*int pixel = p_bfImage.getRGB(x, y);
+                    pixel += Math.abs(pixel) * d / p_radius;
+                    if(pixel > -1)
+                    {
+                        pixel = -1;
+                    }*/
+                    pos[index] = new Point(x, y, 0xFFFFFFFF);
                     index++;
                 }
             }
@@ -155,13 +163,13 @@ public class DrawingField extends Field
     private void setCircle(int x, int y)
     {
         // Creates a new array of position
-        Position  p_position[] = new Position[10000];
+        Point  p_points[] = new Point[10000];
 
         // Fills the array with every pixel in the circle around the mouse
-        getCircle(p_position, x, y);
+        getCircle(p_points, x, y);
 
         // For every pixel recorded
-        for(Position p : p_position)
+        for(Point p : p_points)
         {
             // If the pixel is null, the end of the list has been reached
             if(p == null)
@@ -177,7 +185,7 @@ public class DrawingField extends Field
             else
             {
                 // Set the corresponding pixel of the image to white
-                p_bfImage.setRGB(p.x, p.y, 0xFFFFFFFF);
+                p_bfImage.setRGB(p.x, p.y, p.c);
             }
         }
         repaint();
@@ -263,7 +271,7 @@ public class DrawingField extends Field
     /**
      * A class to handle point in space.
      **/
-    private class Position
+    private class Point
     {
         // X coord
         public int x;
@@ -271,11 +279,15 @@ public class DrawingField extends Field
         // Y coord
         public int y;
 
+        // Color of the point
+        public int c;
+
         // Creates a new point
-        public Position(int x, int y)
+        public Point(int x, int y, int c)
         {
             this.x = x;
             this.y = y;
+            this.c = c;
         }
     }
 }
