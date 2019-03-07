@@ -128,13 +128,18 @@ public class DrawingField extends Field
                 if(d < p_radius)
                 {
                     // Lighter shades of white the further away from the center
-                    /*int pixel = p_bfImage.getRGB(x, y);
-                    pixel += Math.abs(pixel) * d / p_radius;
-                    if(pixel > -1)
+                    int pixel = p_bfImage.getRGB(x, y);
+                    int factor = (int)(15 * Math.sqrt(Math.sqrt((double)(d) / (double)(p_radius))));
+                    int b = 0x00FF0000 - 0x00110000 * factor;
+                    int g = 0x0000FF00 - 0x00001100 * factor;
+                    int r = 0x000000FF - 0x00000011 * factor;
+                    int shift = (0x00000000) | (b) | (g) | r;
+                    pixel += shift;
+                    if(pixel >= 0xFFFFFFFF)
                     {
                         pixel = -1;
-                    }*/
-                    pos[index] = new Point(x, y, 0xFFFFFFFF);
+                    }
+                    pos[index] = new Point(x, y, pixel);
                     index++;
                 }
             }
