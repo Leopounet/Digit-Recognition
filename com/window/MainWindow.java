@@ -12,6 +12,7 @@ import com.dataset.*;
 import com.field.*;
 import com.button.*;
 import com.pane.*;
+import com.image.*;
 
 /**
  * The main window of this program, most of the event start here.
@@ -277,7 +278,7 @@ public class MainWindow extends JFrame
     public void setImage(BufferedImage image)
     {
         // Centers the digit and set the image
-        p_uploadedImage = p_contentPane.getTLField().centerDigit(image);
+        p_uploadedImage = ImageProcessing.centerDigit(image);
 
         // wait 0.5 sec (to let the window appear correctly)
         try

@@ -9,6 +9,8 @@ import javax.swing.event.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.awt.image.BufferedImage;
 
+import com.image.*;
+
 /**
  * The field the user draws on.
  **/
@@ -69,21 +71,7 @@ public class DrawingField extends Field
      **/
     private void initImage()
     {
-        // Creates the image
-        p_bfImage = new BufferedImage(p_fieldSize.width, p_fieldSize.height, BufferedImage.TYPE_INT_ARGB);
-
-        // Black pixel code
-        int black = 0xFF000000;
-
-        // For every pixels of the image
-        for(int x = 0; x < p_fieldSize.width; x++)
-        {
-            for(int y = 0; y < p_fieldSize.height; y++)
-            {
-                // Set the pixel black
-                p_bfImage.setRGB(x, y, black);
-            }
-        }
+        p_bfImage = ImageProcessing.createBufferedImage(p_fieldSize, 0xFF000000);
         repaint();
     }
 
@@ -102,64 +90,6 @@ public class DrawingField extends Field
     }
 
     /**
-     * Fills the given array with the position of every pixels within the selected
-     * radius.
-     * @param pos The list of pixels to draw
-     * @param centerX The center X of the circle to draw
-     * @param centerY The center Y of the circle to draw
-     **/
-    private void getCircle(Point pos[], int centerX, int centerY)
-    {
-        int index = 0;
-        // For every pixel within the square from (x - r, y - r) (x + r, y + r)
-        for(int x = centerX - p_radius; x < centerX + p_radius; x++)
-        {
-            for(int y = centerY - p_radius; y < centerY + p_radius; y++)
-            {
-                // If the pixel is outside the field dimensions
-                if(x < 0 || y < 0 || x >= p_fieldSize.width || y >= p_fieldSize.height)
-                {
-                    continue;
-                }
-
-                // If the pixel  is within the circle of radius p_radius, add it
-                // to the list
-                int d = distance(x, y, centerX, centerY);
-                if(d < p_radius)
-                {
-                    // Lighter shades of white the further away from the center
-                    int pixel = p_bfImage.getRGB(x, y);
-                    int factor = (int)(15 * Math.sqrt(Math.sqrt((double)(d) / (double)(p_radius))));
-                    int b = 0x00FF0000 - 0x00110000 * factor;
-                    int g = 0x0000FF00 - 0x00001100 * factor;
-                    int r = 0x000000FF - 0x00000011 * factor;
-                    int shift = (0x00000000) | (b) | (g) | r;
-                    pixel += shift;
-                    if(pixel >= 0xFFFFFFFF)
-                    {
-                        pixel = -1;
-                    }
-                    pos[index] = new Point(x, y, pixel);
-                    index++;
-                }
-            }
-        }
-    }
-
-    /**
-     * Returns the distance between two given point.
-     * @param x The x coordinate of the first point
-     * @param y The y coordinate of the first point
-     * @param centerX The x coordinate of the second point
-     * @param centerY The y coordinate of the second point
-     **/
-    private int distance(int x, int y, int centerX, int centerY)
-    {
-        // Pythagorian theorem
-        return (int) Math.sqrt(Math.pow((double)(x - centerX), 2) + Math.pow((double)(y - centerY), 2));
-    }
-
-    /**
      * Sets every pixels belonging to the circle of radius p_radius with center
      (x, y).
      * @param x The x coordinate of the center of the circle to draw
@@ -167,32 +97,7 @@ public class DrawingField extends Field
      **/
     private void setCircle(int x, int y)
     {
-        // Creates a new array of position
-        Point  p_points[] = new Point[10000];
-
-        // Fills the array with every pixel in the circle around the mouse
-        getCircle(p_points, x, y);
-
-        // For every pixel recorded
-        for(Point p : p_points)
-        {
-            // If the pixel is null, the end of the list has been reached
-            if(p == null)
-            {
-                break;
-            }
-
-            if(p_erase)
-            {
-                // Set the corresponding pixel of the image to black
-                p_bfImage.setRGB(p.x, p.y, 0xFF000000);
-            }
-            else
-            {
-                // Set the corresponding pixel of the image to white
-                p_bfImage.setRGB(p.x, p.y, p.c);
-            }
-        }
+        ImageProcessing.setCircle(p_bfImage, p_fieldSize, x, y, p_radius, p_erase);
         repaint();
     }
 
@@ -270,29 +175,6 @@ public class DrawingField extends Field
         public void mouseDragged(MouseEvent e)
         {
             setCircle(e.getX(), e.getY());
-        }
-    }
-
-    /**
-     * A class to handle point in space.
-     **/
-    private class Point
-    {
-        // X coord
-        public int x;
-
-        // Y coord
-        public int y;
-
-        // Color of the point
-        public int c;
-
-        // Creates a new point
-        public Point(int x, int y, int c)
-        {
-            this.x = x;
-            this.y = y;
-            this.c = c;
         }
     }
 }
