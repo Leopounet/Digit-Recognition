@@ -98,7 +98,6 @@ public class ImageProcessing
                 if(d < radius)
                 {
                     // Sets the new color of the pixel
-                    int pixel = image.getRGB(x, y);
                     pos[index] = new ColoredPoint(x, y, color);
                     index++;
                 }
@@ -380,6 +379,7 @@ public class ImageProcessing
      **/
     private static int getGray(int pixel)
     {
+        /*
         // Extract r, g, b components of the hex value
         int r = (pixel >> 16) - 0xFFFFFF00;
         int g = (pixel >> 8) - (0xFFFF0000 | (r << 8));
@@ -390,6 +390,8 @@ public class ImageProcessing
 
         // Return a fully gray pixel
         return 0xFF000000 | (gray << 16) | (gray << 8) | gray;
+        */
+        return 0xFFFFFFFF;
     }
 
     /**
