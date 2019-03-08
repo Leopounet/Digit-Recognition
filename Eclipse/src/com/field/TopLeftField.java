@@ -13,7 +13,7 @@ import com.image.*;
 public class TopLeftField extends Field
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	// Image to display
     private Image p_image = null;
 
@@ -75,6 +75,11 @@ public class TopLeftField extends Field
         {
             // Loads the image if possible
             tmp = ImageIO.read(new File(path));
+
+			if(tmp == null)
+			{
+				return null;
+			}
 
             tmp = ImageProcessing.centerDigit(tmp);
         }

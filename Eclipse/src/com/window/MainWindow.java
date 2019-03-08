@@ -16,7 +16,7 @@ import com.image.*;
 public class MainWindow extends BasicWindow
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	// Pane of the window
     private MainContentPane p_contentPane = null;
 
@@ -120,7 +120,10 @@ public class MainWindow extends BasicWindow
              if(tmp != null)
              {
                  p_uploadedImage = UploadButtonListener.getImage(MainWindow.this, p_contentPane, tmp);
-                 UploadButtonListener.displayImage(MainWindow.this, p_contentPane, p_uploadedImage);
+				 if(p_uploadedImage != null)
+				 {
+					 UploadButtonListener.displayImage(MainWindow.this, p_contentPane, p_uploadedImage);
+				 }
              }
          }
      }
