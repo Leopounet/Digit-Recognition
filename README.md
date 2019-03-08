@@ -67,3 +67,4 @@ If you click the save image button, the current displayed image will be saved in
 # Important notes
 
 If you have any problems or questions, please contact me : st20147420@outlook.cardiffmet.ac.uk  
+MNIST site that provides the training and test images : http://yann.lecun.com/exdb/mnist/
