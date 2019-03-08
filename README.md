@@ -34,11 +34,11 @@ Clean the build directory.
 make c
 ```
 
-Note that you may have the following message iif you try to run the first command multiple times.
+Note that you may have the following message if you try to run the first command multiple times.
 ```
 mkdir: cannot create directory ‘XXX’: File exists
 ```
-This is fine, it is just tryin a directory that already exists.
+This is fine, it is just trying a directory that already exists.
 
 # How to use
 
