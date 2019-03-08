@@ -5,8 +5,6 @@ More infos : https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm
 
 # Download
 
-Download the directory you wish to use.
-
 ## Eclipse
 
 Download the corresponding directory, open Eclipse and import the directory as a new project.
@@ -35,6 +33,12 @@ Clean the build directory.
 ```bash
 make c
 ```
+
+Note that you may have the following message iif you try to run the first command multiple times.
+```
+mkdir: cannot create directory ‘XXX’: File exists
+```
+This is fine, it is just tryin a directory that already exists.
 
 # How to use
 
