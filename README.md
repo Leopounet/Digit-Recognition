@@ -2,6 +2,7 @@
 
 This software uses the kNN algorithm to determine what digit is written on an image.
 More infos : https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm
+GitHub link : https://github.com/Leopounet/Digit-Recognition
 
 # Download
 
